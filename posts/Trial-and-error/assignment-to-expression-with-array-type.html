@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Sophie's Blog</title>
+
+    <!-- Favicon -->
+    <link href="../../img/favicon.ico" rel="icon" type="image/x-icon">
+    <link href="../../img/favicon.ico" rel="shortcut icon" type="image/x-icon">
+    <link href="../../img/favicon.ico" rel="bookmark" type="image/x-icon">
+
+    <!-- Bootstrap core CSS -->
+    <link href="../../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom fonts for this template -->
+    <link href="../../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800'
+        rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="../../css/clean-blog.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand" href="../../index.html">Sophie Xin</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                Menu
+                <i class="fa fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../post.html">Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="../../contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="masthead" style="background-image: url('../../img/trial-and-error-bg.jpg')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="post-heading">
+                        <h1>Trial and error</h1>
+                        <h2 class="subheading">Learning from Error : assignment to expression with array type</h2>
+                        <span class="meta">Posted by
+                            <a href="#">Sophie Xin</a>
+                            on December 12, 2017</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../../css/github-markdown.css">
+
+    <article class="markdown-body">
+        <div class="container">
+            <h2 id="error-learning--assignment-to-expression-with-array-type">Error Learning : assignment to expression with array type</h2>
+            <pre>
+                <code class="c hljs">
+                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+                        
+                <span class="hljs-keyword">struct</span> node{
+                <span class="hljs-keyword">char</span> course_name[<span class="hljs-number">20</span>];
+                <span class="hljs-keyword">struct</span> node *next;
+                };
+                        
+                <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> node Node;
+                        
+                <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+                    Node *head = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(Node));
+                    head-&gt;course_name = <span class="hljs-string">"Opearating system"</span>;
+                    head-&gt;next = <span class="hljs-literal">NULL</span>;
+                        
+                <span class="hljs-keyword">int</span> i;
+                <span class="hljs-keyword">int</span> number; <span class="hljs-comment">// the number of course</span>
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"請輸入課程數量: "</span>);
+                <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>, &amp;number);
+                        
+                    Node *current = head;
+                <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= number; i++){
+                    current-&gt;next = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(Node));
+                        
+                <span class="hljs-keyword">char</span> name[<span class="hljs-number">20</span>]; <span class="hljs-comment">// string</span>
+                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"請輸入課程名稱: "</span>);
+                <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%s"</span>, name);
+                        
+                    current-&gt;course_name = name;
+                    current = current -&gt; next;
+                    current -&gt; next = <span class="hljs-literal">NULL</span>;
+                }
+                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                }
+                </code></pre>
+            <p>Error : assignment to expression with array type (line 13, line 29)</p>
+            <p>Reason : You cannot directly assign to an array.</p>
+            <p>Solution : You need to use
+                <code>strcpy()</code> to copy into the array.</p>
+            <ol>
+                <li>
+                    <p>What is LHS and RHS?
+                        <br> &lt;Ex&gt;
+                    </p>
+                    <pre><code>
+    if(Address1 == Address2){...}
+    else{...}
+                        </code></pre>
+                    <p>“Address1” is on the left hand side (LHS), and “Address2” is on the right hand side (RHS).</p>
+                </li>
+                <li>
+                    <p>Difference between assignment and initialization.
+                        <br> &lt;Ex1&gt;
+                    </p>
+                    <pre><code>
+    int a;  // declare a variable
+    int b = 5; // declare and initialize a variable almost at the same moment
+                    </code></pre>
+
+                    <br> &lt;Ex2&gt;
+                    <pre><code>
+    int a; // declare a variable
+    a = 3; // assign a variable
+                    </code></pre>
+                </li>
+            </ol>
+            <p>雖然看似沒有不同，但實際compiler轉譯到assembler language是代表不同的assembly code。如果使用在陣列上，那麼用第二個方法就會出現錯誤(直接assign到在LHS的array變數就會出錯)，必須使用
+                <code>strcpy()</code> (使用
+                <code>strcpy()</code>需引入標頭檔
+                <code>#include &lt;string.h&gt;</code>)</p>
+            <p>除了array以外，
+                <code>struct</code>結構型態、
+                <code>const</code>常數修飾子，都不能這樣使用</p>
+            <p>&lt;Error example 1&gt; array</p>
+            <ul>
+                <li>
+                    <code>char name[] = "Sophie"; // is valid</code>
+                </li>
+                <li>
+                    <code>char name[]; name[]= "Sophie"; // is not valid</code>
+                </li>
+            </ul>
+            <p>&lt;Error example 2&gt; struct</p>
+            <pre><code>    struct classmate student1 = {.name ="Jack", .no ="34567"}; 
+    // valid
+                </code></pre>
+            <pre><code>    struct classmate student1;
+    student1 = {.name ="Jack", .no ="34567"}; // is not valid
+                </code></pre>
+            <p>&lt;Error example 3&gt; const</p>
+            <ul>
+                <li>
+                    <code>const int a = 5; // is valid</code>
+                </li>
+                <li>
+                    <code>const int a; a = 5; // is not valid</code>
+                </li>
+            </ul>
+
+            <p>Solution Code:</p>
+                <pre><code class="C hljs">
+                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
+                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
+                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
+                
+                <span class="hljs-keyword">struct</span> node{
+                    <span class="hljs-keyword">char</span> course_name[<span class="hljs-number">50</span>];
+                    <span class="hljs-keyword">struct</span> node *next;
+                };
+                
+                <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> node Node;
+                
+                <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
+                    Node *head = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(Node));
+                    <span class="hljs-comment">// head-&gt;course_name = "CS course"; //error</span>
+                    <span class="hljs-built_in">strcpy</span>(head-&gt;course_name, <span class="hljs-string">"CS course"</span>);
+                    head-&gt;next = <span class="hljs-literal">NULL</span>;
+                
+                    <span class="hljs-keyword">int</span> i;
+                    <span class="hljs-keyword">int</span> number; <span class="hljs-comment">// the number of course</span>
+                    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"請輸入課程數量: "</span>);
+                    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d\n"</span>, &amp;number);
+                    <span class="hljs-comment">/* 輸入值時，會按Enter(換行字元'\n')，來結束number的輸入，置入到buffer中
+                     * 若沒有再輸入值當中加入'\n'，會被fgets當作輸入用，
+                     * 因此在輸入course name時，會少一次輸入
+                     * 所以在%d加上'\n'字元讓scanf吃掉enter('\n'換行字元)
+                     */</span>
+                     
+                    Node *current = head;
+                    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= number; i++){
+                        current-&gt;next = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(Node));
+                
+                        <span class="hljs-keyword">char</span> name[<span class="hljs-number">50</span>]; <span class="hljs-comment">// string</span>
+                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Please Enter Course Name %d\n: "</span>, i);
+                        fgets(name, <span class="hljs-keyword">sizeof</span>(name), <span class="hljs-built_in">stdin</span>);
+                
+                        <span class="hljs-comment">// 1. scanf("%s", name); 不使用這種是因為打空白直接算另一個字串</span>
+                        <span class="hljs-comment">// 2. gets(name) 不使用這種是因為也有一樣的問題</span>
+                
+                        <span class="hljs-comment">// current-&gt;course_name = name // error</span>
+                        <span class="hljs-built_in">strcpy</span>(current-&gt;course_name, name);
+                        current = current -&gt; next;
+                        current -&gt; next = <span class="hljs-literal">NULL</span>;
+                    }
+                
+                    <span class="hljs-comment">// print all course and clear memory</span>
+                    current = head;
+                    Node *temp; <span class="hljs-comment">// temporary and delete</span>
+                    i = <span class="hljs-number">1</span>;
+                    <span class="hljs-keyword">while</span>(current != <span class="hljs-literal">NULL</span> &amp;&amp; i &lt;= number){
+                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Course %d is: %s\n"</span>, i, current-&gt;course_name );
+                        temp = current-&gt;next;
+                        <span class="hljs-built_in">free</span>(current);
+                        current = temp;
+                        i++;
+                    }
+                    head = <span class="hljs-literal">NULL</span>;
+                    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+                }
+                </code></pre>
+
+            <p>Reference:
+                <br>
+                <a href="https://stackoverflow.com/questions/37225244/error-assignment-to-expression-with-array-type-error-when-i-assign-a-struct-f"
+                    target="_blank">stack overflow</a>
+                <br>
+                <a href="https://stackoverflow.com/questions/16217839/is-there-a-difference-between-initializing-a-variable-and-assigning-it-a-value-i"
+                    target="_blank">assignment and initialization</a>
+            </p>
+        </div>
+    </article>
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <ul class="list-inline text-center">
+                        <li class="list-inline-item">
+                            <a href="https://twitter.com/SophieXin_Chen">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://www.facebook.com/chacha8536">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="https://github.com/SophieXin9636">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <p class="copyright text-muted">Copyright &copy; Sophie Xin 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="../../vendor/jquery/jquery.min.js"></script>
+    <script src="../../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom scripts for this template -->
+    <script src="../../js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
