@@ -29,13 +29,16 @@
 
 </head>
 
-<script>(function (d, s, id) {
+<script>
+    (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
+        js = d.createElement(s);
+        js.id = id;
         js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.11';
         fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 <body>
 
@@ -86,187 +89,21 @@
     </header>
 
     <!-- Post Content -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../css/github-markdown.css">
-
-    <article class="markdown-body">
-        <div class="container">
-            <h2 id="error-learning--assignment-to-expression-with-array-type">Error Learning : assignment to expression with array type</h2>
-            <img src="../../img/input-error.jpg" width="680" height="280">
-            </a>
-            <pre>
-                <code class="c hljs">
-                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
-                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
-                        
-                <span class="hljs-keyword">struct</span> node{
-                <span class="hljs-keyword">char</span> course_name[<span class="hljs-number">20</span>];
-                <span class="hljs-keyword">struct</span> node *next;
-                };
-                        
-                <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> node Node;
-                        
-                <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
-                    Node *head = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(Node));
-                    head-&gt;course_name = <span class="hljs-string">"Opearating system"</span>;
-                    head-&gt;next = <span class="hljs-literal">NULL</span>;
-                        
-                <span class="hljs-keyword">int</span> i;
-                <span class="hljs-keyword">int</span> number; <span class="hljs-comment">// the number of course</span>
-                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"請輸入課程數量: "</span>);
-                <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>, &amp;number);
-                        
-                    Node *current = head;
-                <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= number; i++){
-                    current-&gt;next = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(Node));
-                        
-                <span class="hljs-keyword">char</span> name[<span class="hljs-number">20</span>]; <span class="hljs-comment">// string</span>
-                <span class="hljs-built_in">printf</span>(<span class="hljs-string">"請輸入課程名稱: "</span>);
-                <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%s"</span>, name);
-                        
-                    current-&gt;course_name = name;
-                    current = current -&gt; next;
-                    current -&gt; next = <span class="hljs-literal">NULL</span>;
-                }
-                <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-                }
-                </code></pre>
-            <p>Error : assignment to expression with array type (line 13, line 29)</p>
-            <p>Reason : You cannot directly assign to an array.</p>
-            <p>Solution : You need to use
-                <code>strcpy()</code> to copy into the array.</p>
-            <ol>
-                <li>
-                    <p>What is LHS and RHS?
-                        <br> &lt;Ex&gt;
-                    </p>
-                    <pre><code>
-    if(Address1 == Address2){...}
-    else{...}
-                        </code></pre>
-                    <p>“Address1” is on the left hand side (LHS), and “Address2” is on the right hand side (RHS).</p>
-                </li>
-                <li>
-                    <p>Difference between assignment and initialization.
-                        <br> &lt;Ex1&gt;
-                    </p>
-                    <pre><code>
-    int a;  // declare a variable
-    int b = 5; // declare and initialize a variable almost at the same moment
-                    </code></pre>
-
-                    <br> &lt;Ex2&gt;
-                    <pre><code>
-    int a; // declare a variable
-    a = 3; // assign a variable
-                    </code></pre>
-                </li>
-            </ol>
-            <p>雖然看似沒有不同，但實際compiler轉譯到assembler language是代表不同的assembly code。如果使用在陣列上，那麼用第二個方法就會出現錯誤(直接assign到在LHS的array變數就會出錯)，必須使用
-                <code>strcpy()</code> (使用
-                <code>strcpy()</code>需引入標頭檔
-                <code>#include &lt;string.h&gt;</code>)</p>
-            <p>除了array以外，
-                <code>struct</code>結構型態、
-                <code>const</code>常數修飾子，都不能這樣使用</p>
-            <p>&lt;Error example 1&gt; array</p>
-            <ul>
-                <li>
-                    <code>char name[] = "Sophie"; // is valid</code>
-                </li>
-                <li>
-                    <code>char name[]; name[]= "Sophie"; // is not valid</code>
-                </li>
-            </ul>
-            <p>&lt;Error example 2&gt; struct</p>
-            <pre><code>    struct classmate student1 = {.name ="Jack", .no ="34567"}; 
-    // valid
-                </code></pre>
-            <pre><code>    struct classmate student1;
-    student1 = {.name ="Jack", .no ="34567"}; // is not valid
-                </code></pre>
-            <p>&lt;Error example 3&gt; const</p>
-            <ul>
-                <li>
-                    <code>const int a = 5; // is valid</code>
-                </li>
-                <li>
-                    <code>const int a; a = 5; // is not valid</code>
-                </li>
-            </ul>
-
-            <p>Solution Code:</p>
-            <pre><code class="C hljs">
-                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdio.h&gt;</span></span>
-                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;stdlib.h&gt;</span></span>
-                <span class="hljs-meta">#<span class="hljs-meta-keyword">include</span> <span class="hljs-meta-string">&lt;string.h&gt;</span></span>
-                
-                <span class="hljs-keyword">struct</span> node{
-                    <span class="hljs-keyword">char</span> course_name[<span class="hljs-number">50</span>];
-                    <span class="hljs-keyword">struct</span> node *next;
-                };
-                
-                <span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> node Node;
-                
-                <span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">(<span class="hljs-keyword">void</span>)</span> </span>{
-                    Node *head = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(Node));
-                    <span class="hljs-comment">// head-&gt;course_name = "CS course"; //error</span>
-                    <span class="hljs-built_in">strcpy</span>(head-&gt;course_name, <span class="hljs-string">"CS course"</span>);
-                    head-&gt;next = <span class="hljs-literal">NULL</span>;
-                
-                    <span class="hljs-keyword">int</span> i;
-                    <span class="hljs-keyword">int</span> number; <span class="hljs-comment">// the number of course</span>
-                    <span class="hljs-built_in">printf</span>(<span class="hljs-string">"請輸入課程數量: "</span>);
-                    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d\n"</span>, &amp;number);
-                    <span class="hljs-comment">/* 輸入值時，會按Enter(換行字元'\n')，來結束number的輸入，置入到buffer中
-                     * 若沒有再輸入值當中加入'\n'，會被fgets當作輸入用，
-                     * 因此在輸入course name時，會少一次輸入
-                     * 所以在%d加上'\n'字元讓scanf吃掉enter('\n'換行字元)
-                     */</span>
-                     
-                    Node *current = head;
-                    <span class="hljs-keyword">for</span>(i = <span class="hljs-number">1</span>; i &lt;= number; i++){
-                        current-&gt;next = <span class="hljs-built_in">malloc</span>(<span class="hljs-keyword">sizeof</span>(Node));
-                
-                        <span class="hljs-keyword">char</span> name[<span class="hljs-number">50</span>]; <span class="hljs-comment">// string</span>
-                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Please Enter Course Name %d\n: "</span>, i);
-                        fgets(name, <span class="hljs-keyword">sizeof</span>(name), <span class="hljs-built_in">stdin</span>);
-                
-                        <span class="hljs-comment">// 1. scanf("%s", name); 不使用這種是因為打空白直接算另一個字串</span>
-                        <span class="hljs-comment">// 2. gets(name) 不使用這種是因為也有一樣的問題</span>
-                
-                        <span class="hljs-comment">// current-&gt;course_name = name // error</span>
-                        <span class="hljs-built_in">strcpy</span>(current-&gt;course_name, name);
-                        current = current -&gt; next;
-                        current -&gt; next = <span class="hljs-literal">NULL</span>;
+    <article>
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <script src="https://gist.github.com/SophieXin9636/34c0400e85d5bb912da693f11679cc34.js"></script>
+                <style>
+                    .gist .markdown-body .highlight pre,
+                    .gist .markdown-body pre {
+                        font-size: 14px;
                     }
-                
-                    <span class="hljs-comment">// print all course and clear memory</span>
-                    current = head;
-                    Node *temp; <span class="hljs-comment">// temporary and delete</span>
-                    i = <span class="hljs-number">1</span>;
-                    <span class="hljs-keyword">while</span>(current != <span class="hljs-literal">NULL</span> &amp;&amp; i &lt;= number){
-                        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"Course %d is: %s\n"</span>, i, current-&gt;course_name );
-                        temp = current-&gt;next;
-                        <span class="hljs-built_in">free</span>(current);
-                        current = temp;
-                        i++;
-                    }
-                    head = <span class="hljs-literal">NULL</span>;
-                    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
-                }
-                </code></pre>
-
-            <p>Reference:
-                <br>
-                <a href="https://stackoverflow.com/questions/37225244/error-assignment-to-expression-with-array-type-error-when-i-assign-a-struct-f"
-                    target="_blank">stack overflow</a>
-                <br>
-                <a href="https://stackoverflow.com/questions/16217839/is-there-a-difference-between-initializing-a-variable-and-assigning-it-a-value-i"
-                    target="_blank">assignment and initialization</a>
-            </p>
-            <div class="fb-comments" data-href="https://sophiexin9636.github.io/posts/Trial-and-error/assignment-to-expression-with-array-type.html" data-width="650" data-numposts="10"></div>
+                </style>
+                <div class="fb-comments" data-href="https://sophiexin9636.github.io/posts/Convergent-Thinking/assignment-to-expression-with-array-type.html"
+                    data-width="650" data-numposts="10"></div>
+            </div>
         </div>
+
     </article>
 
     <hr>
