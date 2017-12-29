@@ -70,7 +70,7 @@ img::-moz-selection {
   background: transparent; }
 
 body {
-  -webkit-tap-highlight-color: #0085A1; }
+  -webkit-tap-highlight-color: #2EA9DF; }
 
 #mainNav {
   position: absolute;
@@ -129,11 +129,11 @@ body {
         #mainNav.is-fixed .navbar-brand {
           color: #212529; }
           #mainNav.is-fixed .navbar-brand:focus, #mainNav.is-fixed .navbar-brand:hover {
-            color: #0085A1; }
+            color: #F19483; }
         #mainNav.is-fixed .navbar-nav > li.nav-item > a {
           color: #212529; }
           #mainNav.is-fixed .navbar-nav > li.nav-item > a:focus, #mainNav.is-fixed .navbar-nav > li.nav-item > a:hover {
-            color: #0085A1; }
+            color: #F19483; }
       #mainNav.is-visible {
         /* if the user changes the scrolling direction, we show the header */
         -webkit-transform: translate3d(0, 100%, 0);
@@ -224,7 +224,7 @@ header.masthead {
   color: #212529; }
   .post-preview > a:focus, .post-preview > a:hover {
     text-decoration: none;
-    color: #0085A1; }
+    color: #F19483; }
   .post-preview > a > .post-title {
     font-size: 30px;
     margin-top: 30px;
@@ -243,7 +243,7 @@ header.masthead {
     color: #212529; }
     .post-preview > .post-meta > a:focus, .post-preview > .post-meta > a:hover {
       text-decoration: underline;
-      color: #0085A1; }
+      color: #F19483; }
 
 @media only screen and (min-width: 768px) {
   .post-preview > a > .post-title {
