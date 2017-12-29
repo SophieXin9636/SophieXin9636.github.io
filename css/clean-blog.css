@@ -25,12 +25,12 @@ h6 {
   font-family: Calibri, 微軟正黑體, 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 
 a {
-  color: #212529;
+  color: #2EA9DF;
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   transition: all 0.2s; }
   a:focus, a:hover {
-    color: #0085A1; }
+    color: #F19483; }
 
 blockquote {
   font-style: italic;
@@ -53,12 +53,12 @@ blockquote {
 
 ::-moz-selection {
   color: #fff;
-  background: #0085A1;
+  background: #7B90D2;
   text-shadow: none; }
 
 ::selection {
   color: #fff;
-  background: #0085A1;
+  background: #7B90D2;
   text-shadow: none; }
 
 img::selection {
