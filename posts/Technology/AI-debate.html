@@ -29,13 +29,16 @@
 
 </head>
 
-<script>(function (d, s, id) {
+<script>
+    (function (d, s, id) {
         var js, fjs = d.getElementsByTagName(s)[0];
         if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
+        js = d.createElement(s);
+        js.id = id;
         js.src = 'https://connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.11';
         fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));</script>
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 <body>
 
@@ -94,6 +97,10 @@
                     .gist .markdown-body .highlight pre,
                     .gist .markdown-body pre {
                         font-size: 120%;
+                    }
+
+                    .markdown-body a {
+                        color: #0366d6;
                     }
                 </style>
                 <div class="fb-comments" data-href="https://sophiexin9636.github.io/posts/Technology/AI-debate.html" data-width="650" data-numposts="10"></div>
