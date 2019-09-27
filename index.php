@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<?php
+  $main_pageName = "習慣是無痛的釋放";
+?>
+
 <head>
 
   <meta charset="utf-8">
@@ -49,7 +53,7 @@
             <a class="nav-link" href="about.html">About</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="post.html">Post</a>
+            <a class="nav-link" href="posts/index.html">Post</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="contact.html">Contact</a>
@@ -60,13 +64,15 @@
   </nav>
 
   <!-- Page Header -->
-  <header class="masthead" style="background-image: url('img/post-bg.jpg')">
+  <header class="masthead" style="background-image: url('img/newtaipei-bg.jpg')">
     <div class="overlay"></div>
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="site-heading">
-            <h1>習慣是無痛的釋放</h1>
+            <?php 
+              echo "<h2>{$main_pageName}</h2>";
+            ?>
             <span class="subheading">Listening Music and Learning CS
             </span>
           </div>
@@ -76,99 +82,101 @@
   </header>
 
   <!-- Main Content -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-md-10 mx-auto">
 
-        <div class="post-preview">
-          <a href="posts/Trial-and-error/assignment-to-expression-with-array-type.html">
-            <h2 class="post-title">
-                Learning from Error : assignment to expression with array type
-            </h2>
-            <h3 class="post-subtitle">
-                Trial and error
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Sophie Xin</a>
-            on December 12, 2017</p>
-        </div>
-        <hr>
+  <?php
+    $post = array(
+      array(
+        'post-subtitle' => '常見的泰勒展開式',
+        'post-title' => 'Commonly Used Taylor Series.',
+        'Date' => 'on January 7, 2018',
+        'link' => 'posts/C/taylor-series.html'
+      ),
+      array(
+        'post-subtitle' => '字串相關整理',
+        'post-title' => 'String.',
+        'Date' => 'on January 7, 2018',
+        'link' => 'posts/C/string.html'
+      ),
+      array(
+        'post-subtitle' => '質數相關程式題',
+        'post-title' => 'Example of prime number in C.',
+        'Date' => 'on December 19, 2017',
+        'link' => 'posts/C/prime-number.html'
+      ),
+      array(
+        'post-subtitle' => '常見的迭代式總整理',
+        'post-title' => 'Example of common iteration.',
+        'Date' => 'on December 19, 2017',
+        'link' => 'posts/C/iterative.html'
+      ),
+      array(
+        'post-subtitle' => '常見的遞迴式總整理',
+        'post-title' => 'Example of common recursion.',
+        'Date' => 'on December 16, 2017',
+        'link' => 'posts/C/recursive.html'
+      ),
+      array(
+        'post-subtitle' => 'Two AI robots : Sophia and Han Robot.',
+        'post-title' => 'Two Robots first debate the future of humanity.',
+        'Date' => 'on December 16, 2017',
+        'link' => 'posts/Technology/AI-debate.html'
+      ),
+      array(
+        'post-subtitle' => '印出直角三角形及菱形.',
+        'post-title' => 'Print right triangle and diamond in C.',
+        'Date' => 'on December 14, 2017',
+        'link' => 'posts/C/triangle.html'
+      ),
+      array(
+        'post-subtitle' => 'Trial and error',
+        'post-title' => 'Learning from Error : assignment to expression with array type',
+        'Date' => 'on December 12, 2017',
+        'link' => 'posts/Convergent-Thinking/assignment-to-expression-with-array-type.html'
+      ),
+      array(
+        'post-subtitle' => 'Hello darkness, my old friend.',
+        'post-title' => 'The Sound of Silence',
+        'Date' => 'on November 28, 2017',
+        'link' => 'posts/music/The-sound-of-silence.html'
+      ),
+      array(
+        'post-subtitle' => '擁有獨特的嗓音，一位具有個人特色的藝術音樂家',
+        'post-title' => 'Sainkho Namtchylak',
+        'Date' => 'on November 21, 2017',
+        'link' => 'posts/music/Sainkho-Namtchylak.html'
+      ),
+      array(
+        'post-subtitle' => 'Martin Garrix',
+        'post-title' => 'A famous DJ in Netherlands.',
+        'Date' => 'on November 21, 2017',
+        'link' => 'posts/music/1121-Martin-Garrix.html'
+      ),
+      array(
+        'post-subtitle' => 'More range, higher speeds and increase broadcasting capacity.',
+        'post-title' => 'Bluetooth 5.0',
+        'Date' => 'on November 08, 2017',
+        'link' => 'posts/Technology/1108-Bluetooth5.html'
+      )
+      
+    );
 
-        <div class="post-preview">
-          <div class="post-preview">
-            <a href="posts/The-sound-of-silence.html">
-              <h2 class="post-title">
-                The Sound of Silence
-              </h2>
-              <h3 class="post-subtitle">
-                Hello darkness, my old friend.
-              </h3>
-            </a>
-            <p class="post-meta">Posted by
-              <a href="#">Sophie Xin</a>
-              on November 28, 2017</p>
-          </div>
-          <hr>
+    foreach($post as $key => $content){
+      echo "<div class='post-preview'>";
+      echo "<a href={$post[$key]['link']}>";
+      echo "<h2 class='post-title'>";
+              echo "{$post[$key]['post-title']}";
+              echo "</h2>";
+              echo "<h3 class='post-subtitle'>";
+              echo "{$post[$key]['post-subtitle']}";
+              echo "</h3>";
+              echo "</a>";
+              echo "<p class='post-meta'>Posted by <a href='#'>Sophie Xin</a>";
+            echo "{$post[$key]['date']}</p>";
+        echo "</div>";
+        echo "<hr>";
+    }
 
-          <a href="posts/Sainkho-Namtchylak.html">
-            <h2 class="post-title">
-              Sainkho Namtchylak
-            </h2>
-            <h3 class="post-subtitle">
-              擁有獨特的嗓音，一位具有個人特色的藝術音樂家
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Sophie Xin</a>
-            on November 21, 2017</p>
-        </div>
-        <hr>
-
-        <div class="post-preview">
-          <a href="posts/1121-Martin-Garrix.html">
-            <h2 class="post-title">
-              Martin Garrix
-            </h2>
-            <h3 class="post-subtitle">
-              A famous DJ in Netherlands.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Sophie Xin</a>
-            on November 21, 2017</p>
-        </div>
-        <hr>
-
-        <div class="post-preview">
-          <a href="posts/1108-Bluetooth5.html">
-            <h2 class="post-title">
-              Bluetooth 5.0
-            </h2>
-            <h3 class="post-subtitle">
-              More range, higher speeds and increase broadcasting capacity.
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Sophie Xin</a>
-            on November 08, 2017</p>
-        </div>
-        <hr>
-
-        <div class="post-preview">
-          <a href="posts/.html">
-            <h2 class="post-title">
-
-            </h2>
-            <h3 class="post-subtitle">
-
-            </h3>
-          </a>
-          <p class="post-meta">Posted by
-            <a href="#">Sophie Xin</a>
-            on July 8, 2017</p>
-        </div>
-        <hr>
+  ?>
 
         <!-- Pager -->
         <div class="clearfix">
