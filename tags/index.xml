@@ -1,15 +1,97 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on Shin</title>
+    <title>Tags on Shin&#39;s Blog</title>
     <link>/tags/</link>
-    <description>Recent content in Tags on Shin</description>
+    <description>Recent content in Tags on Shin&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
     <copyright>©2020 Notepadium.</copyright>
+    <lastBuildDate>Thu, 13 Feb 2020 17:14:09 +0800</lastBuildDate>
     
         <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>hugo</title>
+      <link>/tags/hugo/</link>
+      <pubDate>Thu, 13 Feb 2020 17:14:09 +0800</pubDate>
+      
+      <guid>/tags/hugo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>website</title>
+      <link>/tags/website/</link>
+      <pubDate>Thu, 13 Feb 2020 17:14:09 +0800</pubDate>
+      
+      <guid>/tags/website/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>CTF</title>
+      <link>/tags/ctf/</link>
+      <pubDate>Thu, 13 Feb 2020 00:10:46 +0800</pubDate>
+      
+      <guid>/tags/ctf/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>pwn</title>
+      <link>/tags/pwn/</link>
+      <pubDate>Thu, 13 Feb 2020 00:10:46 +0800</pubDate>
+      
+      <guid>/tags/pwn/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>C</title>
+      <link>/tags/c/</link>
+      <pubDate>Sun, 07 Jan 2018 15:45:44 +0800</pubDate>
+      
+      <guid>/tags/c/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>程式</title>
+      <link>/tags/%E7%A8%8B%E5%BC%8F/</link>
+      <pubDate>Sun, 07 Jan 2018 15:45:44 +0800</pubDate>
+      
+      <guid>/tags/%E7%A8%8B%E5%BC%8F/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>AI</title>
+      <link>/tags/ai/</link>
+      <pubDate>Sat, 16 Dec 2017 19:36:37 +0800</pubDate>
+      
+      <guid>/tags/ai/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Music</title>
+      <link>/tags/music/</link>
+      <pubDate>Tue, 21 Nov 2017 22:55:17 +0800</pubDate>
+      
+      <guid>/tags/music/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>bluetooth</title>
+      <link>/tags/bluetooth/</link>
+      <pubDate>Wed, 08 Nov 2017 19:18:03 +0800</pubDate>
+      
+      <guid>/tags/bluetooth/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

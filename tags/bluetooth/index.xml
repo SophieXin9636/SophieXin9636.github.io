@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>bluetooth on Shin&#39;s Blog</title>
+    <link>/tags/bluetooth/</link>
+    <description>Recent content in bluetooth on Shin&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <copyright>©2020 Notepadium.</copyright>
+    <lastBuildDate>Wed, 08 Nov 2017 19:18:03 +0800</lastBuildDate>
+    
+        <atom:link href="/tags/bluetooth/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Bluetooth 5.0</title>
+      <link>/posts/bluetooth5.0/</link>
+      <pubDate>Wed, 08 Nov 2017 19:18:03 +0800</pubDate>
+      
+      <guid>/posts/bluetooth5.0/</guid>
+      <description>More range, higher speeds and increase broadcasting capacity. [English Version] Bluetooth 5.0 has been promoted in the smartphone market which be announced in 2016. Besides Bluetooth and Wi-Fi are common wireless networking technology on IOT application, and Zigbee which is supported widely in the IOT industry. Low-power Zigbee and its advantages of supporting many kinds of Network Topology, but with slow-growth of industry, it is not universal. (And announcing of</description>
+    </item>
+    
+  </channel>
+</rss>

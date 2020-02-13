@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>note on Shin&#39;s Blog</title>
+    <link>/categories/note/</link>
+    <description>Recent content in note on Shin&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <copyright>©2020 Notepadium.</copyright>
+    <lastBuildDate>Thu, 13 Feb 2020 17:14:09 +0800</lastBuildDate>
+    
+        <atom:link href="/categories/note/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hugo Tutorial</title>
+      <link>/posts/hugotut/</link>
+      <pubDate>Thu, 13 Feb 2020 17:14:09 +0800</pubDate>
+      
+      <guid>/posts/hugotut/</guid>
+      <description>Hugo Tutorial 本篇文章適用於 有個人github網站，第一次使用 hugo 的使用者 有post文章需求，不想要html一直複製貼上 想懶人打造個人網站的使用者 建議要</description>
+    </item>
+    
+  </channel>
+</rss>

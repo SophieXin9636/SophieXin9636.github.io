@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Technology on Shin&#39;s Blog</title>
+    <link>/categories/technology/</link>
+    <description>Recent content in Technology on Shin&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <copyright>©2020 Notepadium.</copyright>
+    <lastBuildDate>Sat, 16 Dec 2017 19:36:37 +0800</lastBuildDate>
+    
+        <atom:link href="/categories/technology/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>AI_debate</title>
+      <link>/posts/ai_debate/</link>
+      <pubDate>Sat, 16 Dec 2017 19:36:37 +0800</pubDate>
+      
+      <guid>/posts/ai_debate/</guid>
+      <description>Two robots first debate the future of humanity Two AI robots: Sophia and Han Robot 從兩端的互動看得我要笑瘋XD 它們的反應真的很好玩~! 在辯論之前，兩個機器人在閒聊(Chit Chat) Sophia竟然會</description>
+    </item>
+    
+    <item>
+      <title>Bluetooth 5.0</title>
+      <link>/posts/bluetooth5.0/</link>
+      <pubDate>Wed, 08 Nov 2017 19:18:03 +0800</pubDate>
+      
+      <guid>/posts/bluetooth5.0/</guid>
+      <description>More range, higher speeds and increase broadcasting capacity. [English Version] Bluetooth 5.0 has been promoted in the smartphone market which be announced in 2016. Besides Bluetooth and Wi-Fi are common wireless networking technology on IOT application, and Zigbee which is supported widely in the IOT industry. Low-power Zigbee and its advantages of supporting many kinds of Network Topology, but with slow-growth of industry, it is not universal. (And announcing of</description>
+    </item>
+    
+  </channel>
+</rss>

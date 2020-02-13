@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.64.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>String&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.80078b457da7cb561436bd5aec6d25da3e7e66699d7e65a663ba6d9a53003921d8b75569a8f4e38d0f03513fbf5fddd0.css" integrity="sha384-gAeLRX2ny1YUNr1a7G0l2j5&#43;ZmmdfmWmY7ptmlMAOSHYt1VpqPTjjQ8DUT&#43;/X93Q"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">String</h1><p class="article date">Sunday, January 7, 2018</p></section><article class="article markdown-body"><p>字串相關整理</p>
+<h1 id="字串-string">字串 (string)</h1>
+<ul>
+<li><a href="#1">strcpy、strcat比較</a></li>
+<li><a href="#2">使用strcpy容易發生幾種狀況</a></li>
+<li><a href="#3">反轉字串 Reverse a string</a></li>
+<li><a href="#4">strcmp介紹、字串排序 (string sort)</a></li>
+</ul>
+<h2 id="a-name1strcpystrcat比較a"><a name="1">strcpy、strcat比較</a></h2>
+<p>需使用<code>#include &lt;string.h&gt;</code>引入標頭檔</p>
+<ul>
+<li><code>strcpy</code>：string copy</li>
+<li><code>strcat</code>：string concatenation (字串連接)</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">char</span> <span class="n">source_1</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="p">,</span> <span class="n">destination_1</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="p">;</span> <span class="c1">// use for strcpy
+</span><span class="c1"></span>	<span class="kt">char</span> <span class="n">source_2</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="p">,</span> <span class="n">destination_2</span><span class="p">[</span><span class="mi">50</span><span class="p">]</span><span class="p">;</span> <span class="c1">// use for strcat
+</span><span class="c1"></span>	
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%s%s</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">source_1</span><span class="p">,</span> <span class="n">destination_1</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%s%s</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">source_2</span><span class="p">,</span> <span class="n">destination_2</span><span class="p">)</span><span class="p">;</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">Before strcpy:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">* source_1 string is: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">source_1</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">* destination_1 string is: %s</span><span class="se">\n</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">destination_1</span><span class="p">)</span><span class="p">;</span>
+	
+	<span class="n">strcpy</span><span class="p">(</span><span class="n">destination_1</span><span class="p">,</span> <span class="n">source_1</span><span class="p">)</span><span class="p">;</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">After strcpy:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">* source_1 string is: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">source_1</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">* destination_1 string is: %s</span><span class="se">\n</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">destination_1</span><span class="p">)</span><span class="p">;</span>
+	
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">Before strcat:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">* source_2 string is: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">source_2</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">* destination_2 string is: %s</span><span class="se">\n</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">destination_2</span><span class="p">)</span><span class="p">;</span>
+	
+	<span class="n">strcat</span><span class="p">(</span><span class="n">destination_2</span><span class="p">,</span> <span class="n">source_2</span><span class="p">)</span><span class="p">;</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">After strcat:</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">* source_2 string is: %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">source_2</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">* destination_2 string is: %s</span><span class="se">\n</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">destination_2</span><span class="p">)</span><span class="p">;</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h5 id="output">Output</h5>
+<pre><code>Before strcpy:
+* source_1 string is: Test_for_source_1
+* destination_1 string is: Test_destination_1
+
+After strcpy:
+* source_1 string is: Test_for_source_1
+* destination_1 string is: Test_for_source_1
+
+Before strcat:
+* source_2 string is: Test_for_source_2
+* destination_2 string is: destination_2
+
+After strcat:
+* source_2 string is: Test_for_source_2
+* destination_2 string is: destination_2Test_for_source_2
+</code></pre><h2 id="a-name2使用strcpy容易發生幾種狀況a"><a name="2">使用strcpy容易發生幾種狀況</a></h2>
+<ol>
+<li>
+<p><code>char string1[80] = &quot;programming</code>本身宣告80個位元組(Bytes)大小的字元陣列，使用<code>strcpy(string1, &quot;more programming&quot;);</code>是沒問題的。
+(除非source字串超過80 Bytes，就會發生如同狀況2)</p>
+</li>
+<li>
+<p><code>char string2[] = &quot;programming</code>本身就沒有宣告大小，因此在編譯時，編譯器會計算初始化該字串的總大小(包含&rsquo;\0'字元)為12 Bytes。
+在執行strcpy時，會發生<strong>緩衝區覆蓋(buffer overrun)</strong></p>
+</li>
+</ol>
+<ul>
+<li>緩衝區覆蓋(buffer overrun)：使用<code>strcpy</code>及<code>strcat</code>時，如果source string超過destination string的長度，將可能會覆蓋到其他變數的內容。</li>
+</ul>
+<ol start="3">
+<li><code>char *string3 = &quot;programming&quot;</code>本身是指標，占4 Bytes。
+編譯器會在唯讀記憶體中放一個字元陣列，初始化成&quot;programming&rdquo;，再將<code>*string3</code>指向這個字元陣列。
+因此一執行strcpy時，系統會宣告執行錯誤。</li>
+</ol>
+<ul>
+<li>第三種狀況多半放在唯獨記憶中，盡量不要嘗試寫入這個字串 (寫字元進入會執行錯誤)</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;string.h&gt; // 引入 string header file</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">char</span> <span class="n">string1</span><span class="p">[</span><span class="mi">80</span><span class="p">]</span> <span class="o">=</span> <span class="sa"></span><span class="s">&#34;</span><span class="s">programming</span><span class="s">&#34;</span><span class="p">;</span>
+	<span class="kt">char</span> <span class="n">string2</span><span class="p">[</span><span class="p">]</span> <span class="o">=</span> <span class="sa"></span><span class="s">&#34;</span><span class="s">programming</span><span class="s">&#34;</span><span class="p">;</span>
+	<span class="kt">char</span> <span class="o">*</span><span class="n">string3</span> <span class="o">=</span> <span class="sa"></span><span class="s">&#34;</span><span class="s">programming</span><span class="s">&#34;</span><span class="p">;</span>
+	
+	<span class="c1">// string copy
+</span><span class="c1"></span>	<span class="n">strcpy</span><span class="p">(</span><span class="n">string1</span><span class="p">,</span> <span class="sa"></span><span class="s">&#34;</span><span class="s">more programming</span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span> <span class="c1">// 1. success
+</span><span class="c1"></span>	<span class="n">strcpy</span><span class="p">(</span><span class="n">string2</span><span class="p">,</span> <span class="sa"></span><span class="s">&#34;</span><span class="s">more programming</span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span> <span class="c1">// 2. buffer overrun 緩衝區覆蓋
+</span><span class="c1"></span>	<span class="n">strcpy</span><span class="p">(</span><span class="n">string3</span><span class="p">,</span> <span class="sa"></span><span class="s">&#34;</span><span class="s">more programming</span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span> <span class="c1">// 3. runtime error
+</span><span class="c1"></span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="a-name3反轉字串-reverse-a-stringa"><a name="3">反轉字串 Reverse a string</a></h2>
+<h4 id="方法一">方法一</h4>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cm">/*  Reverse a string 反轉字串  */</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">length</span><span class="p">;</span>
+	<span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="mi">80</span><span class="p">]</span><span class="p">;</span> <span class="c1">// declare a string
+</span><span class="c1"></span>	<span class="kt">char</span> <span class="n">temp</span><span class="p">;</span>  <span class="c1">// temporary
+</span><span class="c1"></span>	
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%s</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">length</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">The length of 『%s』 is %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">The size   of 『%s』 is %d</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="p">)</span><span class="p">;</span>
+	
+	<span class="c1">// Reverse a string 反轉字串
+</span><span class="c1"></span>	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">length</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+		<span class="n">temp</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">;</span>
+		<span class="n">s</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">]</span><span class="p">;</span>
+		<span class="n">s</span><span class="p">[</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span> 
+	<span class="p">}</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">The reversed string is : %s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h4 id="方法二">方法二</h4>
+<div class="highlight"><pre class="chroma"><code class="language-C++" data-lang="C++"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;cstring&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">reverse_string</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">char</span> <span class="n">s</span><span class="p">[</span><span class="p">]</span> <span class="o">=</span> <span class="sa"></span><span class="s">&#34;</span><span class="s">ABCDEFGH</span><span class="s">&#34;</span><span class="p">;</span>
+	<span class="n">reverse_string</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">cout</span> <span class="o">&lt;</span><span class="o">&lt;</span> <span class="n">s</span><span class="p">;</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">reverse_string</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">a</span><span class="p">)</span><span class="p">{</span> <span class="c1">// 注意此行
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="n">strlen</span><span class="p">(</span><span class="n">a</span><span class="p">)</span><span class="p">;</span>
+	<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">j</span><span class="o">=</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">(</span><span class="n">l</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">,</span> <span class="n">j</span><span class="o">-</span><span class="o">-</span><span class="p">)</span><span class="p">{</span>
+		<span class="kt">char</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">;</span>
+		<span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="p">;</span>
+		<span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="a-name4strcmp介紹字串排序-string-sorta"><a name="4">strcmp介紹、字串排序 (string sort)</a></h2>
+<ul>
+<li><code>strcmp</code> : string compare，同樣也在<code>&lt;string.h&gt;</code>標頭檔裡。<code>strcmp</code>是用來比較兩個字串的大小，並會回傳整數值。</li>
+<li><code>strcmp</code>的比較方式：兩字串的第一個字元開始，以ASCII碼大小比較，如果左字串大於右字串則回傳正數，反之回傳負數，一樣大(代表兩者字串相同)則回傳 0。</li>
+</ul>
+<h4 id="方法一-使用strcpy作swap">&lt;方法一&gt; 使用strcpy作swap</h4>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cm">/* string sort : use bubble sort */</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">char</span> <span class="n">zodiac</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span> <span class="c1">// counter
+</span><span class="c1"></span>	<span class="kt">char</span> <span class="n">temp</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="p">;</span> <span class="c1">// temporary
+</span><span class="c1"></span>	
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span>
+		<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%s</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">zodiac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+		
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">-</span><span class="o">-</span><span class="p">)</span><span class="p">{</span>
+		<span class="k">for</span><span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">zodiac</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="p">,</span> <span class="n">zodiac</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="p">{</span>
+				<span class="n">strcpy</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">zodiac</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+				<span class="n">strcpy</span><span class="p">(</span><span class="n">zodiac</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="p">,</span> <span class="n">zodiac</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+				<span class="n">strcpy</span><span class="p">(</span><span class="n">zodiac</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span>
+		<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">zodiac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h4 id="方法二-使用指標陣列作swap">&lt;方法二&gt; 使用指標陣列作swap</h4>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;string.h&gt;</span><span class="cp">
+</span><span class="cp"></span> 
+<span class="cm">/* string sort : use bubble sort */</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">char</span> <span class="n">zodiac</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="p">[</span><span class="mi">20</span><span class="p">]</span><span class="p">;</span>
+	<span class="kt">char</span> <span class="o">*</span><span class="n">zptr</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">;</span> <span class="c1">// counter
+</span><span class="c1"></span>	<span class="kt">char</span> <span class="o">*</span><span class="n">temp</span><span class="p">;</span> <span class="c1">// temporary
+</span><span class="c1"></span> 
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+		<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%s</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">zodiac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+		<span class="n">zptr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">zodiac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">;</span>
+	<span class="p">}</span>
+ 
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">11</span><span class="p">;</span> <span class="n">i</span> <span class="o">&gt;</span><span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">-</span><span class="o">-</span><span class="p">)</span><span class="p">{</span>
+		<span class="k">for</span><span class="p">(</span><span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+			<span class="k">if</span><span class="p">(</span><span class="n">strcmp</span><span class="p">(</span><span class="n">zptr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="p">,</span> <span class="n">zptr</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="p">{</span>
+				<span class="n">temp</span> <span class="o">=</span> <span class="n">zptr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="p">;</span>
+				<span class="n">zptr</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">zptr</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span><span class="p">;</span>
+				<span class="n">zptr</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">temp</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+ 
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">12</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span>
+		<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%s</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">zptr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="p">)</span><span class="p">;</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h3 id="reference">Reference</h3>
+<p>[1] 由片語學習C程式設計 劉邦鋒</p>
+</article><section class="article labels"><a class="category" href=/categories/programming/>Programming</a><a class="tag" href=/tags/c/>C</a><a class="tag" href=/tags/%E7%A8%8B%E5%BC%8F/>程式</a></section><section class="article navigation"><p><a class="link" href="/posts/taylor-series/"><span class="li">&larr;</span>Commonly Used Taylor Series</a></p><p><a class="link" href="/posts/prime/"><span class="li">&rarr;</span>質數相關程式題</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

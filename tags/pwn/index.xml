@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pwn on Shin&#39;s Blog</title>
+    <link>/tags/pwn/</link>
+    <description>Recent content in pwn on Shin&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <copyright>©2020 Notepadium.</copyright>
+    <lastBuildDate>Thu, 13 Feb 2020 00:10:46 +0800</lastBuildDate>
+    
+        <atom:link href="/tags/pwn/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>ELF 五種保護機制</title>
+      <link>/posts/protection/</link>
+      <pubDate>Thu, 13 Feb 2020 00:10:46 +0800</pubDate>
+      
+      <guid>/posts/protection/</guid>
+      <description>ELF 五種保護機制 Stack Canary Stack Protector 防bof漏洞攻擊 若有開啟Canary，則程式執行時會在return address前放一個隨機值叫Canary 如果利用b</description>
+    </item>
+    
+  </channel>
+</rss>

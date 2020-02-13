@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.64.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Commonly Used Taylor Series&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.80078b457da7cb561436bd5aec6d25da3e7e66699d7e65a663ba6d9a53003921d8b75569a8f4e38d0f03513fbf5fddd0.css" integrity="sha384-gAeLRX2ny1YUNr1a7G0l2j5&#43;ZmmdfmWmY7ptmlMAOSHYt1VpqPTjjQ8DUT&#43;/X93Q"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">Commonly Used Taylor Series</h1><p class="article date">Sunday, January 7, 2018</p></section><article class="article markdown-body"><h1 id="常見的泰勒級數-commonly-used-taylor-series">常見的泰勒級數 Commonly Used Taylor Series</h1>
+<p>常見的泰勒展開式 (Taylor expansion) 有以下</p>
+<ol>
+<li><a href="#1">1/(1-x)</a></li>
+<li><a href="#2">sin(x)</a></li>
+<li><a href="#3">cos(x)</a></li>
+<li><a href="#4">e^x</a></li>
+<li><a href="#5">ln(1+x)</a></li>
+<li><a href="#6">arctan(x)</a></li>
+</ol>
+<h2 id="a-name111-xa"><a name="1">1/(1-x)</a></h2>
+<p><img src="https://sophiexin9636.github.io/img/post/c/1-x.jpg" width="50%" height="50%" ></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span> 
+<span class="cm">/* Taylor&#39;s Series : 1/(1-x) */</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">double</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// input data
+</span><span class="c1"></span>	<span class="kt">double</span> <span class="n">sum</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">xpower</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+ 
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%lf</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span><span class="p">;</span>
+	<span class="k">if</span><span class="p">(</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&amp;</span><span class="o">&amp;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span><span class="p">{</span>
+		<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="o">=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+			<span class="n">xpower</span> <span class="o">*</span><span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+			<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">xpower</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%f</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">sum</span><span class="p">)</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="a-name2sinxa"><a name="2">sin(x)</a></h2>
+<p><img src="https://sophiexin9636.github.io/img/post/c/sinx.jpg" width="50%" height="50%" ></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp">
+</span><span class="cp"></span> 
+<span class="cm">/* Taylor&#39;s Series : sin(x) 
+</span><span class="cm"> * Sine function using Taylor expansion */</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">double</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// input data
+</span><span class="c1"></span>	<span class="kt">double</span> <span class="n">sum</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">Enter the value of x : </span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%lf</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">term</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+	<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">term</span><span class="p">;</span>
+	
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+		<span class="n">term</span> <span class="o">*</span><span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">i</span><span class="p">)</span><span class="p">;</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">=</span><span class="o">=</span> <span class="mi">1</span><span class="p">)</span><span class="p">{</span>
+			<span class="n">term</span> <span class="o">=</span> <span class="o">-</span><span class="n">term</span><span class="p">;</span>
+			<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">term</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="se">\n</span><span class="s">use taylor series is : %f</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">sum</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">sin(x) is : %f</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="p">)</span><span class="p">;</span> <span class="c1">// check
+</span><span class="c1"></span>	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="a-name3cosxa"><a name="3">cos(x)</a></h2>
+<p><img src="https://sophiexin9636.github.io/img/post/c/cosx.jpg" width="60%" height="60%" ></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp">
+</span><span class="cp"></span> 
+<span class="cm">/* Taylor&#39;s Series : con(x) 
+</span><span class="cm"> * Cosine function using Taylor expansion */</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">double</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// input data
+</span><span class="c1"></span>	<span class="kt">double</span> <span class="n">sum</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">Enter the value of x : </span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%lf</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">term</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+	<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">term</span><span class="p">;</span>
+	
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">)</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+		<span class="n">term</span> <span class="o">*</span><span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">i</span><span class="p">)</span><span class="p">;</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">=</span><span class="o">=</span> <span class="mi">0</span><span class="p">)</span><span class="p">{</span>
+			<span class="n">term</span> <span class="o">=</span> <span class="o">-</span><span class="n">term</span><span class="p">;</span>
+			<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">term</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="se">\n</span><span class="s">use taylor series is : %f</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">sum</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">cos(%f) is : %f</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">cos</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="p">)</span><span class="p">;</span> <span class="c1">// check
+</span><span class="c1"></span>	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="a-name4exa"><a name="4">e^x</a></h2>
+<p><img src="https://sophiexin9636.github.io/img/post/c/e^x.jpg" width="50%" height="50%" ></p>
+<h4 id="方法一">&lt;方法一&gt;</h4>
+<p>由於float占4 Bytes，double占8 Bytes，需要高度精密計算時，使用double會勝過float型態，
+因此使用<strong>double</strong>型態來宣告變數<strong>e</strong>，較float精確。</p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cm">/* Taylor&#39;s Series : e^x */</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">double</span> <span class="n">x</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">e</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>  <span class="c1">// counter
+</span><span class="c1"></span>    <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">factorial</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">xpower</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+	
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%lf</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span><span class="p">;</span>
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="o">=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+		<span class="n">factorial</span> <span class="o">*</span><span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+		<span class="n">xpower</span> <span class="o">*</span><span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+		<span class="n">e</span> <span class="o">+</span><span class="o">=</span> <span class="n">xpower</span> <span class="o">/</span> <span class="n">factorial</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%f</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span><span class="p">;</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h4 id="方法二">&lt;方法二&gt;</h4>
+<p>使用&lt;方法一&gt;會有一個問題，當n 變大時，變數factorial容易發生溢位(overflow)，將可能導致計算結果不正確。</p>
+<p>此方法不直接計算階乘(分母)的部分，避免溢位。</p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="cm">/* Taylor&#39;s Series : e^x */</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">;</span>	<span class="c1">// counter
+</span><span class="c1"></span>	<span class="kt">double</span> <span class="n">term</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span> <span class="c1">// 數列的第n項的值
+</span><span class="c1"></span>	<span class="kt">double</span> <span class="n">e</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// input variable
+</span><span class="c1"></span>	<span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span> <span class="c1">// 級數加到第n項
+</span><span class="c1"></span>	
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%lf</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span><span class="p">;</span>
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="o">=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+		<span class="n">term</span> <span class="o">*</span><span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">i</span><span class="p">)</span><span class="p">;</span>
+		<span class="n">e</span> <span class="o">+</span><span class="o">=</span> <span class="n">term</span><span class="p">;</span> 
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="a-name5ln1xa"><a name="5">ln(1+x)</a></h2>
+<p><img src="https://sophiexin9636.github.io/img/post/c/ln(1+x).jpg" width="50%" height="50%" ></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp">
+</span><span class="cp"></span> 
+<span class="cm">/* Taylor&#39;s Series : ln(1+x) 
+</span><span class="cm"> * Sine function using Taylor expansion */</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">double</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// input data
+</span><span class="c1"></span>	<span class="kt">double</span> <span class="n">sum</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">Enter the value of x : </span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%lf</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">xpower</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+	<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+	
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="o">=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+		<span class="n">xpower</span> <span class="o">*</span><span class="o">=</span> <span class="o">-</span><span class="n">x</span><span class="p">;</span>
+		<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">xpower</span> <span class="o">/</span> <span class="n">i</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="se">\n</span><span class="s">ln(%f) use taylor series is : %f</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="n">x</span><span class="p">,</span> <span class="n">sum</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">ln(%f) = %f</span><span class="s">&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="n">x</span><span class="p">,</span> <span class="n">log</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">x</span><span class="p">)</span><span class="p">)</span><span class="p">;</span> <span class="c1">// check
+</span><span class="c1"></span>	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="a-name6arctanxa"><a name="6">arctan(x)</a></h2>
+<p><img src="https://sophiexin9636.github.io/img/post/c/arctan(x).jpg" width="50%" height="50%" ></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;math.h&gt;</span><span class="cp">
+</span><span class="cp"></span> 
+<span class="cm">/* Taylor&#39;s Series : arctan(x) 
+</span><span class="cm"> * Sine function using Taylor expansion */</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kt">double</span> <span class="n">x</span><span class="p">;</span> <span class="c1">// input data
+</span><span class="c1"></span>	<span class="kt">double</span> <span class="n">sum</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+	<span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+	
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">Enter the value of x : </span><span class="s">&#34;</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">scanf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">%lf</span><span class="s">&#34;</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">x</span><span class="p">)</span><span class="p">;</span>
+	<span class="kt">double</span> <span class="n">xpower</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+	<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+	
+	<span class="k">for</span><span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span><span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="p">;</span> <span class="n">i</span><span class="o">+</span><span class="o">+</span><span class="p">)</span><span class="p">{</span>
+		<span class="n">xpower</span> <span class="o">*</span><span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+		<span class="k">if</span><span class="p">(</span><span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">=</span><span class="o">=</span> <span class="mi">1</span><span class="p">)</span><span class="p">{</span>
+			<span class="n">xpower</span> <span class="o">=</span> <span class="o">-</span><span class="n">xpower</span><span class="p">;</span>
+			<span class="n">sum</span> <span class="o">+</span><span class="o">=</span> <span class="n">xpower</span> <span class="o">/</span> <span class="n">i</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="se">\n</span><span class="s">arctan(%f) use taylor series is : %f</span><span class="se">\n</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sum</span><span class="p">)</span><span class="p">;</span>
+	<span class="n">printf</span><span class="p">(</span><span class="sa"></span><span class="s">&#34;</span><span class="s">arctan(%f) = %f</span><span class="s">&#34;</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">atan</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="p">)</span><span class="p">;</span> <span class="c1">// check
+</span><span class="c1"></span>	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></article><section class="article labels"><a class="category" href=/categories/programming/>Programming</a><a class="tag" href=/tags/c/>C</a><a class="tag" href=/tags/%E7%A8%8B%E5%BC%8F/>程式</a></section><section class="article navigation"><p><a class="link" href="/posts/protection/"><span class="li">&larr;</span>ELF 五種保護機制</a></p><p><a class="link" href="/posts/string/"><span class="li">&rarr;</span>String</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>
