@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Thu, 13 Feb 2020 00:10:46 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 17 Feb 2020 13:37:01 +0800</lastBuildDate>
     
         <atom:link href="/tags/pwn/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>解 ROP 之工具與詳細流程</title>
+      <link>/posts/easyrop/</link>
+      <pubDate>Mon, 17 Feb 2020 13:37:01 +0800</pubDate>
+      
+      <guid>/posts/easyrop/</guid>
+      <description>ROP writeup checksec rop Arch: amd64-64-little RELRO: Partial RELRO Stack: No canary found NX: NX enabled PIE: No PIE (0x400000) file rop rop: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.32, BuildID[sha1]=6608f6b8f49633b8d8248f7665b6ba35659a595a, not stripped 線索1：statically linked 動態連結是當程式執行時，才會去 library</description>
+    </item>
     
     <item>
       <title>ELF 五種保護機制</title>
