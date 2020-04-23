@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.64.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>函式呼叫(I) - 參數暫存&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">函式呼叫(I) - 參數暫存</h1><p class="article date">Tuesday, April 21, 2020</p></section><article class="article markdown-body"><h1 id="函式呼叫i---參數暫存">函式呼叫(I) - 參數暫存</h1>
+<h2 id="前言">前言</h2>
+<p>這學期修了計算機組織的課程，了解到 MIPS 呼叫函式所暫存的參數方式與 x86、x64 有一些不同，在了解逆向分析之函數分析的流程之前，必須先了解呼叫前後的參數所在。
+透過本篇文章可以了解到，一個函式的呼叫，在<strong>不同的指令集有很大的差別</strong>，並透過函數的呼叫，可以了解到<strong>在呼叫函式時傳入了多少引數，哪些引數？</strong>，以及<strong>是在呼叫前暫存引數，還是呼叫後暫存參數？</strong>，在使用逆向分析時會更方便。</p>
+<h3 id="名詞介紹">名詞介紹</h3>
+<ul>
+<li>argument (引數)：呼叫函式時，其程式碼括號內的參數稱之。</li>
+<li>parameter (參數)：定義或宣告函式時，其程式碼括號內的參數稱之。</li>
+<li>caller：呼叫函式的函式 (呼叫者)</li>
+<li>callee：被呼叫的函式 (被呼叫者)</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#</span><span class="cp">include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span>
+<span class="kt">void</span> <span class="nf">hello</span><span class="p">(</span><span class="kt">long</span> <span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="kt">long</span> <span class="kt">int</span> <span class="n">b</span><span class="p">)</span><span class="p">{</span> 
+	<span class="c1">// a, b are parameters
+</span><span class="c1"></span>    <span class="cm">/* statement */</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="p">)</span><span class="p">{</span>
+    <span class="kt">long</span> <span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">2000</span><span class="p">;</span>
+    
+    <span class="cm">/* x, y are arguments, 
+</span><span class="cm">       and hello is callee, main is caller */</span>
+    <span class="n">hello</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="p">;</span> 
+    
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="mips">MIPS</h2>
+<p>以 MIPS 來看，進入到 callee 之後，才將 parameter 及 return address push 到 stack 暫存</p>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/gKkOjlT.png"><img  src="https://i.imgur.com/gKkOjlT.png"
+        alt/></a></p>
+<h2 id="x86">x86</h2>
+<p>對 x86 來說，在 caller 呼叫 callee 之前，就會先將 argument push 到 stack 之後再呼叫函數</p>
+<p>以 ubuntu 為例，若 OS 環境為64位元，但想要編譯 32 位元的 x86 <br>
+則可按照下列方式安裝 gcc 32-bit 可支援的 library</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">sudo apt-get install gcc-multilib
+</code></pre></div><p>編譯與執行</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">gcc -m32 -o hello.o hello.c
+./hello.o
+</code></pre></div><p>使用 objdump 反組譯分析組合語言 (-d為disassemble, -M為disassembler-options)</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">objdump -d -M intel ./hello.o
+</code></pre></div><p>在 main function 要呼叫 puts 之前，<br>
+x86 會先將處理好參數內容保存在暫存器，並在psuh到stack上暫存</p>
+<p>此圖為 main function scope 的程式碼
+<a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/yDOIKLE.png"><img  src="https://i.imgur.com/yDOIKLE.png"
+        alt/></a></p>
+<p>在呼叫function之前幾行有幾次push(大部分情況)，就代表有幾個 argument
+<a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/6CvC33p.png"><img  src="https://i.imgur.com/6CvC33p.png"
+        alt/></a></p>
+<h2 id="x64">x64</h2>
+<p>根據 x64 呼叫慣例 (calling convention)，x64 與 x86 不同的是，x86 並不會 push 到 stack 中，而是將所須參數，<strong>各自儲存在暫存器</strong>中 <br></p>
+<p>但在使用暫存參數的暫存器，會分為兩種：function
+與 system call<br></p>
+<ul>
+<li><code>system call</code> 暫存參數所使用的暫存器如下</li>
+</ul>
+<pre><code>rdi：第一個參數所存放的暫存器
+rsi：第二個參數所存放的暫存器
+rdx：第三個參數所存放的暫存器
+r10：第四個參數所存放的暫存器
+r8：第五個參數所存放的暫存器
+r9：第六個參數所存放的暫存器
+rax：保存 syscall 編號，以便讓系統知道要執行何種 syscall
+</code></pre><ul>
+<li>一般 function (包含 user-defined function 與 library function )
+若超過 6 個 parameter，則將剩下的 parameter <code>push</code> 到 stack (reversed order，也就是從最後一個 parameter 開始 psuh)</li>
+</ul>
+<pre><code>rdi：第一個參數所存放的暫存器
+rsi：第二個參數所存放的暫存器
+rdx：第三個參數所存放的暫存器
+rcx：第四個參數所存放的暫存器
+r8：第五個參數所存放的暫存器
+r9：第六個參數所存放的暫存器
+</code></pre><p>編譯</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">gcc -o hello.o hello.c
+</code></pre></div><p>使用 objdump 反組譯分析組合語言</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">objdump -d -M intel ./hello.o
+</code></pre></div><p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/UYWKrKa.png"><img  src="https://i.imgur.com/UYWKrKa.png"
+        alt/></a></p>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/pT62R86.png"><img  src="https://i.imgur.com/pT62R86.png"
+        alt/></a></p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://docs.microsoft.com/zh-tw/cpp/build/x64-calling-convention?view=vs-2019"target="_blank">x64 呼叫慣例</a></li>
+<li><a href="https://www.csee.umbc.edu/portal/help/nasm/sample_64.shtml"target="_blank">Sample 64-bit nasm programs</a></li>
+<li><a href="https://aaronbloomfield.github.io/pdr/book/x86-64bit-ccc-chapter.pdf"target="_blank">x86-64 calling convention</a></li>
+</ul>
+</article><section class="article labels"><a class="category" href=/categories/ctf-pwn/>CTF pwn</a><a class="tag" href=/tags/ctf/>CTF</a><a class="tag" href=/tags/pwn/>pwn</a><a class="tag" href=/tags/reverse/>reverse</a></section><section class="article navigation"><p><a class="link" href="/posts/va_list/"><span class="li">&rarr;</span>Variable Length Arguments</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>
