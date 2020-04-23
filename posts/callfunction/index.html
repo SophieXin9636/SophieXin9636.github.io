@@ -47,7 +47,7 @@
 ./hello.o
 </code></pre></div><p>使用 objdump 反組譯分析組合語言 (-d為disassemble, -M為disassembler-options)</p>
 <div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">objdump -d -M intel ./hello.o
-</code></pre></div><p>在 main function 要呼叫 puts 之前，<br>
+</code></pre></div><p>在 main function 要呼叫 printf 之前，<br>
 x86 會先將處理好參數內容保存在暫存器，並在psuh到stack上暫存</p>
 <p>此圖為 main function scope 的程式碼
 <a target="_blank" rel="noopener noreferrer" 
@@ -58,7 +58,7 @@ x86 會先將處理好參數內容保存在暫存器，並在psuh到stack上暫�
   href="https://i.imgur.com/6CvC33p.png"><img  src="https://i.imgur.com/6CvC33p.png"
         alt/></a></p>
 <h2 id="x64">x64</h2>
-<p>根據 x64 呼叫慣例 (calling convention)，x64 與 x86 不同的是，x86 並不會 push 到 stack 中，而是將所須參數，<strong>各自儲存在暫存器</strong>中 <br></p>
+<p>根據 x64 呼叫慣例 (calling convention)，x64 與 x86 不同的是，x64 並不會 push 到 stack 中，而是將所須參數，<strong>各自儲存在暫存器</strong>中 <br></p>
 <p>但在使用暫存參數的暫存器，會分為兩種：function
 與 system call<br></p>
 <ul>
