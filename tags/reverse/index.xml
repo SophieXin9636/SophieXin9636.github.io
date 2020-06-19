@@ -13,12 +13,12 @@
     
     
     <item>
-      <title>函式呼叫(I) - 參數暫存</title>
+      <title>函式呼叫(I) - 參數傳遞</title>
       <link>/posts/callfunction/</link>
       <pubDate>Tue, 21 Apr 2020 11:30:51 +0800</pubDate>
       
       <guid>/posts/callfunction/</guid>
-      <description>函式呼叫(I) - 參數暫存 前言 這學期修了計算機組織的課程，了解到 MIPS 呼叫函式所暫存的參數方式與 x86、x64 有一些不同，在了解逆向分析之函數分析</description>
+      <description>函式呼叫(I) - 參數傳遞 前言 這學期修了計算機組織的課程，了解到 MIPS 呼叫函式所暫存的參數方式與 x86、x64 有一些不同，在了解逆向分析之函數分析</description>
     </item>
     
     <item>
