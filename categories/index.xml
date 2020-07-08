@@ -7,7 +7,7 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Sat, 20 Jun 2020 15:42:33 +0800</lastBuildDate>
+    <lastBuildDate>Wed, 08 Jul 2020 17:51:39 +0800</lastBuildDate>
     
         <atom:link href="/categories/index.xml" rel="self" type="application/rss+xml" />
     
@@ -15,7 +15,7 @@
     <item>
       <title>writeup</title>
       <link>/categories/writeup/</link>
-      <pubDate>Sat, 20 Jun 2020 15:42:33 +0800</pubDate>
+      <pubDate>Wed, 08 Jul 2020 17:51:39 +0800</pubDate>
       
       <guid>/categories/writeup/</guid>
       <description></description>
@@ -24,7 +24,7 @@
     <item>
       <title>CTF pwn</title>
       <link>/categories/ctf-pwn/</link>
-      <pubDate>Tue, 21 Apr 2020 11:30:51 +0800</pubDate>
+      <pubDate>Thu, 14 May 2020 23:53:59 +0800</pubDate>
       
       <guid>/categories/ctf-pwn/</guid>
       <description></description>

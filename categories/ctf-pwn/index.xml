@@ -7,10 +7,19 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Tue, 21 Apr 2020 11:30:51 +0800</lastBuildDate>
+    <lastBuildDate>Thu, 14 May 2020 23:53:59 +0800</lastBuildDate>
     
         <atom:link href="/categories/ctf-pwn/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Stack Migration</title>
+      <link>/posts/migration/</link>
+      <pubDate>Thu, 14 May 2020 23:53:59 +0800</pubDate>
+      
+      <guid>/posts/migration/</guid>
+      <description>Stack Migration Stack Migration 指 ROP (Return Oriented Programming) 的一種技巧，可在當 stack 不夠使用時，利用 ROP 控制來竄改 stack pointer (esp or rsp)，指向其他位址，以獲取額外的寫入空間。 範例原始碼 #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; char</description>
+    </item>
     
     <item>
       <title>函式呼叫(I) - 參數傳遞</title>
@@ -45,7 +54,7 @@
       <pubDate>Thu, 13 Feb 2020 00:10:46 +0800</pubDate>
       
       <guid>/posts/protection/</guid>
-      <description>ELF 五種保護機制 Stack Canary Stack Protector 防bof漏洞攻擊 若有開啟Canary，則程式執行時會在return address前放一個隨機值叫Canary 如果利用b</description>
+      <description>ELF 五種保護機制 Stack Canary Stack Protector，也就是用來保護 Stack 段 用來防 bof 漏洞攻擊 若有開啟 Canary，則程式執行時會在 return address 前放一個隨機值叫 Canary 如果利</description>
     </item>
     
   </channel>

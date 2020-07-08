@@ -7,47 +7,53 @@
         <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
     <h1 class="article title">ELF 五種保護機制</h1><p class="article date">Thursday, February 13, 2020</p></section><article class="article markdown-body"><h1 id="elf-五種保護機制">ELF 五種保護機制</h1>
 <ul>
-<li>Stack Canary
+<li>
+<p>Stack Canary</p>
 <ul>
-<li>Stack Protector</li>
-<li>防bof漏洞攻擊</li>
-<li>若有開啟Canary，則程式執行時會在return address前放一個隨機值叫Canary</li>
-<li>如果利用bof等方式去竄改return address，這個隨機值就會被改</li>
+<li>Stack Protector，也就是用來保護 Stack 段</li>
+<li>用來防 bof 漏洞攻擊</li>
+<li>若有開啟 Canary，則程式執行時會在 return address 前放一個隨機值叫 Canary</li>
+<li>如果利用bof等方式去竄改 return address，這個隨機值就會被改</li>
 <li>return之後會檢查Canary，若發現Canary被竄改則會直接停止執行</li>
 </ul>
 </li>
-<li>NX (No-Execution) / DEP (Data Execution Prevention)
+<li>
+<p>NX (No-Execution) / DEP (Data Execution Prevention)</p>
 <ul>
-<li>有些Section有執行權限，有些沒有</li>
-<li>data segment 通常不該有執行權限</li>
-<li>例如stack、heap都只有rw-權限</li>
-<li>因此無法透過Bof在stack放置shellcode執行程式碼</li>
+<li>若該 Section 有 write 權限，則一定沒有 execute 權限</li>
+<li>反之 Section 有 execute 權限，則一定沒有 write 權限</li>
+<li>例如：stack, heap 都只有 rw- 權限，而 data segment 通常不該有執行權限</li>
+<li>因此可防止利用 Bof 漏洞 在 stack 放置 shellcode 執行程式碼</li>
 </ul>
 </li>
-<li>PIE
+<li>
+<p>PIE (Position Independent Code)</p>
 <ul>
-<li>隨機化code段的base位址</li>
-<li>否則固定0x40000000</li>
+<li>隨機化 code 段的 base 位址</li>
+<li>否則固定 0x400000</li>
 <li>可以竄改PIE，讓他關掉</li>
 </ul>
 </li>
-<li>ASLR
+<li>
+<p>ASLR (Address Space Layout Randomization)</p>
 <ul>
-<li>Library和stack的base位址隨機化
+<li>載入 Library 的 base 位址隨機化
 <ul>
-<li>Libc base位址是隨機的 (但在用gdb時，base位址會是固定的)</li>
+<li>Libc base 位址是隨機的</li>
 </ul>
 </li>
+<li>stack 段的 base 位址隨機化</li>
 <li>通常都是有開啟的</li>
-<li>gdb預設會是關閉</li>
+<li>gdb 預設會將 ASLR 保護關閉，因此在用 gdb 工具時，base 位址會是固定的</li>
 <li><code>ldd elffile</code>
 <ul>
-<li>查看該ELF檔案使用什麼library (.so檔，相當於Windows的dll)</li>
+<li>查看該 ELF 檔案引入哪個 library (.so檔，相當於Windows的dll)</li>
 </ul>
 </li>
 </ul>
 </li>
-<li>RELRO (Relocation Read-Only)
+<li>
+<p>RELRO (Relocation Read-Only)</p>
 <ul>
 <li>partial RELRO / disable 可以改寫 GOT</li>
 <li>full RELRO：在 load 時就先決定好 GOT address 了，所以權限設定成不可寫</li>
