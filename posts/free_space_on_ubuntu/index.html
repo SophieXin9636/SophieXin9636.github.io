@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.64.1" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Free Space or Extend Space On Ubuntu&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">Free Space or Extend Space On Ubuntu</h1><p class="article date">Saturday, July 11, 2020</p></section><article class="article markdown-body"><h1 id="free-space-or-extend-space-on-ubuntu">Free Space or Extend Space On Ubuntu</h1>
+<p>當使用 ubuntu 系統時，發現出現下列訊息，則代表必須要做清理磁碟的動作 <br></p>
+<pre><code>Low Disk space on &quot;Filesystem root&quot;
+The volume &quot;Filesystem root&quot; has only 856.0 MB disk space remaining.
+</code></pre><p><img src="../../../img/free_space_on_ubuntu/free_space_01.JPG"><br>
+<br>
+使用 <code>bf</code> 指令可以查看 目前 file system disk space 的使用情況 <br>
+可以看到以下訊息，47 GB 大小的 <code>/dev/sda2</code> 使用率 99%</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">Sophie@ubuntu:~$ df -h
+Filesystem      Size  Used Avail Use% Mounted on
+udev            3.9G     <span class="m">0</span>  3.9G   0% /dev
+tmpfs           794M  1.9M  792M   1% /run
+/dev/sda2        47G   44G  501M  99% /
+tmpfs           3.9G  216K  3.9G   1% /dev/shm
+tmpfs           5.0M     <span class="m">0</span>  5.0M   0% /run/lock
+tmpfs           3.9G     <span class="m">0</span>  3.9G   0% /sys/fs/cgroup
+/dev/loop0      2.3M  2.3M     <span class="m">0</span> 100% /snap/gnome-system-monitor/148
+/dev/loop1      162M  162M     <span class="m">0</span> 100% /snap/gnome-3-28-1804/128
+/dev/loop3      256M  256M     <span class="m">0</span> 100% /snap/gnome-3-34-1804/36
+/dev/loop4      2.5M  2.5M     <span class="m">0</span> 100% /snap/gnome-calculator/748
+/dev/loop5       98M   98M     <span class="m">0</span> 100% /snap/core/9289
+/dev/loop2      584M  584M     <span class="m">0</span> 100% /snap/intellij-idea-community/226
+/dev/loop6      1.0M  1.0M     <span class="m">0</span> 100% /snap/gnome-logs/100
+/dev/loop8      161M  161M     <span class="m">0</span> 100% /snap/gnome-3-28-1804/116
+/dev/loop11     384K  384K     <span class="m">0</span> 100% /snap/gnome-characters/550
+/dev/loop10      55M   55M     <span class="m">0</span> 100% /snap/core18/1705
+/dev/loop7       55M   55M     <span class="m">0</span> 100% /snap/gtk-common-themes/1502
+/dev/loop9      141M  141M     <span class="m">0</span> 100% /snap/gnome-3-26-1604/100
+/dev/loop14     256M  256M     <span class="m">0</span> 100% /snap/gnome-3-34-1804/33
+/dev/loop17     2.5M  2.5M     <span class="m">0</span> 100% /snap/gnome-calculator/730
+/dev/loop12      97M   97M     <span class="m">0</span> 100% /snap/core/9436
+/dev/loop19     384K  384K     <span class="m">0</span> 100% /snap/gnome-characters/539
+/dev/loop18      63M   63M     <span class="m">0</span> 100% /snap/gtk-common-themes/1506
+/dev/loop15     2.3M  2.3M     <span class="m">0</span> 100% /snap/gnome-system-monitor/145
+/dev/loop20     584M  584M     <span class="m">0</span> 100% /snap/intellij-idea-community/232
+/dev/loop13      55M   55M     <span class="m">0</span> 100% /snap/core18/1754
+/dev/loop22     1.0M  1.0M     <span class="m">0</span> 100% /snap/gnome-logs/93
+/dev/loop16     186M  186M     <span class="m">0</span> 100% /snap/zaproxy/5
+/dev/loop21     141M  141M     <span class="m">0</span> 100% /snap/gnome-3-26-1604/98
+/dev/sda1       946M  116M  765M  14% /boot
+tmpfs           794M   16K  794M   1% /run/user/121
+vmhgfs-fuse     224G  157G   68G  70% /mnt/hgfs
+tmpfs           794M   32K  794M   1% /run/user/1000
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">Sophie@ubuntu:~$ sudo fdisk -l /dev/sda
+Disk /dev/sda: <span class="m">80</span> GiB, <span class="m">85899345920</span> bytes, <span class="m">167772160</span> sectors
+Units: sectors of <span class="m">1</span> * <span class="nv">512</span> <span class="o">=</span> <span class="m">512</span> bytes
+Sector size <span class="o">(</span>logical/physical<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
+I/O size <span class="o">(</span>minimum/optimal<span class="o">)</span>: <span class="m">512</span> bytes / <span class="m">512</span> bytes
+Disklabel type: dos
+Disk identifier: 0x316dedfd
+
+Device     Boot     Start       End   Sectors  Size Id Type
+/dev/sda1  *         <span class="m">2048</span>   <span class="m">2002943</span>   <span class="m">2000896</span>  977M <span class="m">83</span> Linux
+/dev/sda2         <span class="m">2002944</span> <span class="m">102006783</span> <span class="m">100003840</span> 47.7G <span class="m">83</span> Linux
+/dev/sda3       <span class="m">102006784</span> <span class="m">104855551</span>   <span class="m">2848768</span>  1.4G <span class="m">82</span> Linux swap / Solaris
+</code></pre></div><br>
+以下列出三個方法來避免這個問題 <br>
+<h2 id="method-1-清除不必要的套件殘留檔">Method 1: 清除不必要的套件、殘留檔</h2>
+<p>使用 <code>autoclean</code> 只會刪除 <code>/var/cache/apt/archives/</code> 已經過期的 deb 套件檔</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt-get autoclean
+</code></pre></div><p>而 <code>clean</code> 會將 <code>/var/cache/apt/archives/</code> 路徑內所有 deb 檔(安裝檔) 刪掉</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt-get clean
+</code></pre></div><p>不定時使用 <code>autoremove</code>，它會移除掉不再使用的 dependencies (指安裝某些軟體所需的 packages )，並且會顯示移除了哪些 packages</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">Sophie@ubuntu:~$ sudo apt-get autoremove
+<span class="m">0</span> upgraded, <span class="m">0</span> newly installed, <span class="m">66</span> to remove and <span class="m">0</span> not upgraded.
+After this operation, <span class="m">251</span> MB disk space will be freed.
+</code></pre></div><h2 id="method-2-journalctl-指令">Method 2: journalctl 指令</h2>
+<p><code>journalctl</code> 是一個用來檢索 systemd journal 的指令，並且可透過不同的 option 來篩選想要的內容 （詳見 <code>man journalctl</code> 在此不多綴述)  <br>
+systemd journal 為 log 管理系統，其保存了許多來自 kernal space 和 user space 的內容。 <br>
+使用的是 ubuntu 18.04 虛擬機，並且下 <code>journalctl</code> 之後，會將我使用的情況紀錄下來</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sophie@ubuntu:~$ journalctl 
+-- Logs begin at Thu 2020-04-23 22:28:31 CST, end at Mon 2020-07-13 21:32:06 CST. --
+ 四  <span class="m">23</span> 22:28:31 ubuntu-for-ais3 systemd<span class="o">[</span>2034<span class="o">]</span>: Starting D-Bus User Message Bus Socket.
+ 四  <span class="m">23</span> 22:28:31 ubuntu-for-ais3 systemd<span class="o">[</span>2034<span class="o">]</span>: Listening on GnuPG cryptographic agent and passphrase cache <span class="o">(</span>restricted<span class="o">)</span>.
+ 四  <span class="m">23</span> 22:28:31 ubuntu-for-ais3 systemd<span class="o">[</span>2034<span class="o">]</span>: Reached target Timers.
+... <span class="o">(</span>還有201344行...此部份做省略<span class="o">)</span>
+...
+...
+ 七  <span class="m">13</span> 21:30:36 ubuntu dbus-daemon<span class="o">[</span>1037<span class="o">]</span>: <span class="o">[</span>system<span class="o">]</span> Successfully activated service <span class="s1">&#39;org.freedesktop.nm_dispatcher&#39;</span>
+ 七  <span class="m">13</span> 21:30:36 ubuntu systemd<span class="o">[</span>1<span class="o">]</span>: Started Network Manager Script Dispatcher Service.
+ 七  <span class="m">13</span> 21:30:36 ubuntu nm-dispatcher<span class="o">[</span>31819<span class="o">]</span>: req:1 <span class="s1">&#39;dhcp4-change&#39;</span> <span class="o">[</span>ens33<span class="o">]</span>: new request <span class="o">(</span><span class="m">1</span> scripts<span class="o">)</span>
+ 七  <span class="m">13</span> 21:30:36 ubuntu nm-dispatcher<span class="o">[</span>31819<span class="o">]</span>: req:1 <span class="s1">&#39;dhcp4-change&#39;</span> <span class="o">[</span>ens33<span class="o">]</span>: start running ordered scripts...
+ 七  <span class="m">13</span> 21:32:06 ubuntu systemd<span class="o">[</span>1<span class="o">]</span>: dev-disk-by<span class="se">\x</span>2duuid-e49f06ad<span class="se">\x</span>2d0d3a<span class="se">\x</span>2d4498<span class="se">\x</span>2d82a9<span class="se">\x</span>2d58b2c9db3015.device: Job dev-disk-by<span class="se">\x</span>2duuid-e49f06ad<span class="se">\x</span>2d0d3a<span class="se">\x</span>2d4498<span class="se">\x</span>2d82
+ 七  <span class="m">13</span> 21:32:06 ubuntu systemd<span class="o">[</span>1<span class="o">]</span>: Timed out waiting <span class="k">for</span> device dev-disk-by<span class="se">\x</span>2duuid-e49f06ad<span class="se">\x</span>2d0d3a<span class="se">\x</span>2d4498<span class="se">\x</span>2d82a9<span class="se">\x</span>2d58b2c9db3015.device.
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sophie@ubuntu:~$ journalctl --disk-usage
+Archived and active journals take up 840.3M in the file system.
+</code></pre></div><p>由於佔用的空間實在太大，因此使用了 <code>--vacuum-time=3d</code>  option，僅保留過去三天的紀錄 <br>
+清除完成後，還是有 5000 行左右，真的很可怕 XD</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sophie@ubuntu:~$ sudo journalctl --vacuum-time<span class="o">=</span>3d
+Vacuuming <span class="k">done</span>, freed 792.2M of archived journals from /var/log/journal/0c1a867975654e11ab0fa8ab9b00dc0f.
+Vacuuming <span class="k">done</span>, freed 0B of archived journals from /var/log/journal.
+</code></pre></div><p>清除完後，從原本 840 MB 減少成 48 MB</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sophie@ubuntu:~$ journalctl --disk-usage
+Archived and active journals take up 48.0M in the file system.
+</code></pre></div><h2 id="method-3-gparted-硬碟分割工具">Method 3: Gparted 硬碟分割工具</h2>
+<p>Gparted (GNOME Partition Editor) 為硬碟分割軟體，ubuntu 系統有內建，因此無須額外下載。 <br>
+假如檔案系統還有其他的額外空間，便可使用此工具來做空間延伸。<br></p>
+<p>目前的硬碟分割配置 <br>
+<img src="../../../img/free_space_on_ubuntu/free_space_02.JPG" width="80%"><br></p>
+<p>對 linux-swap 右鍵點選 Swapoff <br>
+<img src="../../../img/free_space_on_ubuntu/free_space_03.JPG" width="80%"><br></p>
+<p>對 linux-swap 右鍵點選 delete <br>
+<img src="../../../img/free_space_on_ubuntu/free_space_04.JPG" width="80%"><br></p>
+<p>在 /dev/sda2 (黃色區塊）右鍵點選 Resize/Move <br>
+<img src="../../../img/free_space_on_ubuntu/free_space_05.JPG" width="80%"><br></p>
+<p>在 New Size(MiB) 欄位輸入要改成多大的空間 <br>
+每個人系統能夠使用的空間不同，這裡僅供參考。 <br>
+在此以 76 GB 為例，也就是 <code>76*1024 = 77824</code> 建議所輸入的大小以 1024 MiB 為單位 <br>
+切記要預留空間給原先的 linux-swap 使用，個人會留 3~4 GB 的大小 <br>
+完成後點選 Resize <br>
+<img src="../../../img/free_space_on_ubuntu/free_space_06.JPG" width="70%"><br></p>
+<p>之後在 unallocated 點選右鍵 New 來新增分割配置 <br>
+<img src="../../../img/free_space_on_ubuntu/free_space_07.JPG" width="80%"><br></p>
+<p>預設會幫你填入剩下所要分配的空間大小 <br>
+切記 File System 選擇 linux-swap 在點選 add <br>
+<img src="../../../img/free_space_on_ubuntu/free_space_08.JPG" width="70%"><br></p>
+<p>查看下面的 information，確認是否前述步驟都有確實完成，<br>
+一旦分割不好容易發生不可復原的情況 <br>
+最後在點選上面的綠色勾勾(Apply All Opeation) 即可完成硬碟分割<br>
+<img src="../../../img/free_space_on_ubuntu/free_space_09.JPG" width="80%"><br></p>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://itsfoss.com/free-up-space-ubuntu-linux/"target="_blank">7 Simple Ways To Free Up Space On Ubuntu and Linux Mint</a></li>
+<li><a href="https://blog.longwin.com.tw/2012/05/apt-clean-autoclean-diff-2012/"target="_blank">APT 的 clean 與 autoclean 差異</a></li>
+<li><a href="http://linux.vbird.org/linux_basic/0570syslog.php#whatis_syslog_new"target="_blank">使用 systemd 提供的 journalctl 日誌管理</a></li>
+<li><a href="https://wiki.archlinux.org/index.php/Systemd/Journal"target="_blank">Systemd Journal</a></li>
+<li><a href="https://www.freedesktop.org/software/systemd/man/systemd-journald.service.html"target="_blank">systemd-journald.service</a></li>
+<li><a href="https://babygoat.github.io/2019/04/25/journalctl%E4%BD%BF%E7%94%A8%E7%AD%86%E8%A8%98/"target="_blank">journalctl 使用筆記</a></li>
+</ul>
+</article><section class="article labels"><a class="category" href=/categories/linux/>Linux</a><a class="tag" href=/tags/linux/>Linux</a><a class="tag" href=/tags/ubuntu/>Ubuntu</a><a class="tag" href=/tags/disk-management/>disk management</a></section><section class="article navigation"><p><a class="link" href="/posts/asisctf2020_full_protection_writeup/"><span class="li">&rarr;</span>ASIS CTF 2020 pwn Full Protection Writeup</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

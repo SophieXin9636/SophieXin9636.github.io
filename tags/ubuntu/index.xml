@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ubuntu on Shin&#39;s Blog</title>
+    <link>/tags/ubuntu/</link>
+    <description>Recent content in Ubuntu on Shin&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <copyright>©2020 Notepadium.</copyright>
+    <lastBuildDate>Sat, 11 Jul 2020 19:36:26 +0800</lastBuildDate>
+    
+        <atom:link href="/tags/ubuntu/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Free Space or Extend Space On Ubuntu</title>
+      <link>/posts/free_space_on_ubuntu/</link>
+      <pubDate>Sat, 11 Jul 2020 19:36:26 +0800</pubDate>
+      
+      <guid>/posts/free_space_on_ubuntu/</guid>
+      <description>Free Space or Extend Space On Ubuntu 當使用 ubuntu 系統時，發現出現下列訊息，則代表必須要做清理磁碟的動作 Low Disk space on &amp;quot;Filesystem root&amp;quot; The volume &amp;quot;Filesystem root&amp;quot; has only 856.0 MB disk space remaining. 使用 bf 指令可以查看 目前 file system disk space</description>
+    </item>
+    
+  </channel>
+</rss>
