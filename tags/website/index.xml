@@ -14,10 +14,10 @@
     
     <item>
       <title>Hugo Tutorial</title>
-      <link>/posts/hugotut/</link>
+      <link>/posts/2020/02/hugotut/</link>
       <pubDate>Thu, 13 Feb 2020 17:14:09 +0800</pubDate>
       
-      <guid>/posts/hugotut/</guid>
+      <guid>/posts/2020/02/hugotut/</guid>
       <description>Hugo Tutorial 本篇文章適用於 有個人github網站，第一次使用 hugo 的使用者 有post文章需求，不想要html一直複製貼上 想懶人打造個人網站的使用者 建議要</description>
     </item>
     

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Note on Shin&#39;s Blog</title>
+    <link>/tags/note/</link>
+    <description>Recent content in Note on Shin&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-TW</language>
+    <copyright>©2020 Notepadium.</copyright>
+    <lastBuildDate>Sun, 26 Jul 2020 13:25:56 +0800</lastBuildDate>
+    
+        <atom:link href="/tags/note/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>MQTT 教學筆記</title>
+      <link>/posts/2020/07/mqtt/</link>
+      <pubDate>Sun, 26 Jul 2020 13:25:56 +0800</pubDate>
+      
+      <guid>/posts/2020/07/mqtt/</guid>
+      <description>MQTT 教學筆記 MQTT (Message Queuing Telemetry Transport) 是物聯網極受歡迎的訊息傳輸協定 在使用 IOT 相關裝置時，當 Sensor 接收到資料時可透過 MQTT協定來傳送資料。 MQTT 介紹 MQTT 以 發布（Publ</description>
+    </item>
+    
+  </channel>
+</rss>

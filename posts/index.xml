@@ -7,206 +7,215 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Sat, 11 Jul 2020 19:36:26 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 26 Jul 2020 13:25:56 +0800</lastBuildDate>
     
         <atom:link href="/posts/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>MQTT 教學筆記</title>
+      <link>/posts/2020/07/mqtt/</link>
+      <pubDate>Sun, 26 Jul 2020 13:25:56 +0800</pubDate>
+      
+      <guid>/posts/2020/07/mqtt/</guid>
+      <description>MQTT 教學筆記 MQTT (Message Queuing Telemetry Transport) 是物聯網極受歡迎的訊息傳輸協定 在使用 IOT 相關裝置時，當 Sensor 接收到資料時可透過 MQTT協定來傳送資料。 MQTT 介紹 MQTT 以 發布（Publ</description>
+    </item>
+    
+    <item>
       <title>Free Space or Extend Space On Ubuntu</title>
-      <link>/posts/free_space_on_ubuntu/</link>
+      <link>/posts/2020/07/free_space_on_ubuntu/</link>
       <pubDate>Sat, 11 Jul 2020 19:36:26 +0800</pubDate>
       
-      <guid>/posts/free_space_on_ubuntu/</guid>
+      <guid>/posts/2020/07/free_space_on_ubuntu/</guid>
       <description>Free Space or Extend Space On Ubuntu 當使用 ubuntu 系統時，發現出現下列訊息，則代表必須要做清理磁碟的動作 Low Disk space on &amp;quot;Filesystem root&amp;quot; The volume &amp;quot;Filesystem root&amp;quot; has only 856.0 MB disk space remaining. 使用 bf 指令可以查看 目前 file system disk space</description>
     </item>
     
     <item>
       <title>ASIS CTF 2020 pwn Full Protection Writeup</title>
-      <link>/posts/asisctf2020_full_protection_writeup/</link>
+      <link>/posts/2020/07/asisctf2020_full_protection_writeup/</link>
       <pubDate>Wed, 08 Jul 2020 17:51:39 +0800</pubDate>
       
-      <guid>/posts/asisctf2020_full_protection_writeup/</guid>
+      <guid>/posts/2020/07/asisctf2020_full_protection_writeup/</guid>
       <description>ASIS CTF 2020 pwn Full Protection Writeup 此題為 ASIS 的暖身題，但並非想像中的極易簡單 不過很裸，測試之後會發現有 format string 的漏洞。 檢查保護機制 首先檢查此程式有開啟那些保護，發現全</description>
     </item>
     
     <item>
       <title>AIS3 2020 Pre-Exam CTF pwn Portal Gun writeup</title>
-      <link>/posts/ais3ctf2020_portal_gun_writeup/</link>
+      <link>/posts/2020/06/ais3ctf2020_portal_gun_writeup/</link>
       <pubDate>Sat, 20 Jun 2020 15:42:33 +0800</pubDate>
       
-      <guid>/posts/ais3ctf2020_portal_gun_writeup/</guid>
+      <guid>/posts/2020/06/ais3ctf2020_portal_gun_writeup/</guid>
       <description>AIS3 2020 Pre-Exam CTF Portal Gun Writeup Author: Sophie Shin Time: 2020/06/10 10:00 A.M. 為了配合AIS3要抽選手繳交 wirteup，就延後發文了 前言 2019 第一次參加 MyFirstCTF 之後有幸錄取 AIS3 課程，便開始入坑 pwn 在那之</description>
     </item>
     
     <item>
       <title>Stack Migration</title>
-      <link>/posts/migration/</link>
+      <link>/posts/2020/05/migration/</link>
       <pubDate>Thu, 14 May 2020 23:53:59 +0800</pubDate>
       
-      <guid>/posts/migration/</guid>
+      <guid>/posts/2020/05/migration/</guid>
       <description>Stack Migration Stack Migration 指 ROP (Return Oriented Programming) 的一種技巧，可在當 stack 不夠使用時，利用 ROP 控制來竄改 stack pointer (esp or rsp)，指向其他位址，以獲取額外的寫入空間。 範例原始碼 #include &amp;lt;stdio.h&amp;gt; #include &amp;lt;unistd.h&amp;gt; char</description>
     </item>
     
     <item>
       <title>函式呼叫(I) - 參數傳遞</title>
-      <link>/posts/callfunction/</link>
+      <link>/posts/2020/04/callfunction/</link>
       <pubDate>Tue, 21 Apr 2020 11:30:51 +0800</pubDate>
       
-      <guid>/posts/callfunction/</guid>
+      <guid>/posts/2020/04/callfunction/</guid>
       <description>函式呼叫(I) - 參數傳遞 前言 這學期修了計算機組織的課程，了解到 MIPS 呼叫函式所暫存的參數方式與 x86、x64 有一些不同，在了解逆向分析之函數分析</description>
     </item>
     
     <item>
       <title>Variable Length Arguments</title>
-      <link>/posts/va_list/</link>
+      <link>/posts/2020/03/va_list/</link>
       <pubDate>Sun, 22 Mar 2020 16:33:34 +0800</pubDate>
       
-      <guid>/posts/va_list/</guid>
+      <guid>/posts/2020/03/va_list/</guid>
       <description>Variable Length Arguments 當輸入的引數長度不確定時，我們可以使用 Variable Length Arguments 來實作。 其來自於 &amp;lt;stdarg.h&amp;gt; 標準函式庫中 意義 va_list 為 variable argument lists 無論輸入的參數個數為何，皆可處理 實作原理 typedef char *va_list;</description>
     </item>
     
     <item>
       <title>靜態分析工具介紹</title>
-      <link>/posts/sast/</link>
+      <link>/posts/2020/02/sast/</link>
       <pubDate>Mon, 17 Feb 2020 14:35:31 +0800</pubDate>
       
-      <guid>/posts/sast/</guid>
+      <guid>/posts/2020/02/sast/</guid>
       <description>Intro to Static Analysis Tools 打 CTF 時，若沒有用對工具，在分析時會花費許多時間 在寫 reverse 或 pwn 時，使用工具是絕對必要的，能夠適時減少不必要的時間。 在此介紹幾個打 CTF 常使用</description>
     </item>
     
     <item>
       <title>解 ROP 之工具與詳細流程</title>
-      <link>/posts/easyrop/</link>
+      <link>/posts/2020/02/easyrop/</link>
       <pubDate>Mon, 17 Feb 2020 13:37:01 +0800</pubDate>
       
-      <guid>/posts/easyrop/</guid>
+      <guid>/posts/2020/02/easyrop/</guid>
       <description>ROP writeup checksec rop Arch: amd64-64-little RELRO: Partial RELRO Stack: No canary found NX: NX enabled PIE: No PIE (0x400000) file rop rop: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.32, BuildID[sha1]=6608f6b8f49633b8d8248f7665b6ba35659a595a, not stripped 線索1：statically linked 動態連結是當程式執行時，才會去 library</description>
     </item>
     
     <item>
       <title>Hugo Tutorial</title>
-      <link>/posts/hugotut/</link>
+      <link>/posts/2020/02/hugotut/</link>
       <pubDate>Thu, 13 Feb 2020 17:14:09 +0800</pubDate>
       
-      <guid>/posts/hugotut/</guid>
+      <guid>/posts/2020/02/hugotut/</guid>
       <description>Hugo Tutorial 本篇文章適用於 有個人github網站，第一次使用 hugo 的使用者 有post文章需求，不想要html一直複製貼上 想懶人打造個人網站的使用者 建議要</description>
     </item>
     
     <item>
       <title>ELF 五種保護機制</title>
-      <link>/posts/protection/</link>
+      <link>/posts/2020/02/protection/</link>
       <pubDate>Thu, 13 Feb 2020 00:10:46 +0800</pubDate>
       
-      <guid>/posts/protection/</guid>
+      <guid>/posts/2020/02/protection/</guid>
       <description>ELF 五種保護機制 Stack Canary Stack Protector，也就是用來保護 Stack 段 用來防 bof 漏洞攻擊 若有開啟 Canary，則程式執行時會在 return address 前放一個隨機值叫 Canary 如果利</description>
     </item>
     
     <item>
       <title>Commonly Used Taylor Series</title>
-      <link>/posts/taylor-series/</link>
+      <link>/posts/2018/01/taylor-series/</link>
       <pubDate>Sun, 07 Jan 2018 15:45:44 +0800</pubDate>
       
-      <guid>/posts/taylor-series/</guid>
+      <guid>/posts/2018/01/taylor-series/</guid>
       <description>常見的泰勒級數 Commonly Used Taylor Series 常見的泰勒展開式 (Taylor expansion) 有以下 1/(1-x) sin(x) cos(x) e^x ln(1+x) arctan(x) 1/(1-x) #include &amp;lt;stdio.h&amp;gt; /* Taylor&amp;#39;s Series : 1/(1-x) */ int main(void) { double x; // input data double sum = 1.0; int i, n = 100; double xpower = 1.0; scanf(&amp;#34;%lf&amp;#34;, &amp;amp;x); if( x &amp;gt; -1 &amp;amp;&amp;amp; x &amp;lt; 1){</description>
     </item>
     
     <item>
       <title>String</title>
-      <link>/posts/string/</link>
+      <link>/posts/2018/01/string/</link>
       <pubDate>Sun, 07 Jan 2018 14:45:44 +0800</pubDate>
       
-      <guid>/posts/string/</guid>
+      <guid>/posts/2018/01/string/</guid>
       <description>字串相關整理 字串 (string) strcpy、strcat比較 使用strcpy容易發生幾種狀況 反轉字串 Reverse a string strcmp介紹、字串排序 (string sort) strcpy、s</description>
     </item>
     
     <item>
       <title>質數相關程式題</title>
-      <link>/posts/prime/</link>
+      <link>/posts/2017/12/prime/</link>
       <pubDate>Tue, 19 Dec 2017 20:25:01 +0800</pubDate>
       
-      <guid>/posts/prime/</guid>
+      <guid>/posts/2017/12/prime/</guid>
       <description>質數相關程式題 程式的構想由簡易至難分類 判斷是否為質數 列出n以內的所有質數 list prime number 補充：政大106年資科系轉學考考題 Next Prime Number 質因數分解(Integ</description>
     </item>
     
     <item>
       <title>AI_debate</title>
-      <link>/posts/ai_debate/</link>
+      <link>/posts/2017/12/ai_debate/</link>
       <pubDate>Sat, 16 Dec 2017 19:36:37 +0800</pubDate>
       
-      <guid>/posts/ai_debate/</guid>
+      <guid>/posts/2017/12/ai_debate/</guid>
       <description>Two robots first debate the future of humanity Two AI robots: Sophia and Han Robot 從兩端的互動看得我要笑瘋XD 它們的反應真的很好玩~! 在辯論之前，兩個機器人在閒聊(Chit Chat) Sophia竟然會</description>
     </item>
     
     <item>
       <title>Example of common iteration</title>
-      <link>/posts/iteration/</link>
+      <link>/posts/2017/12/iteration/</link>
       <pubDate>Sat, 16 Dec 2017 10:26:44 +0800</pubDate>
       
-      <guid>/posts/iteration/</guid>
+      <guid>/posts/2017/12/iteration/</guid>
       <description>常見Iterative式 Iteration 疊代、跌代 Iteration 例子 Factorial 最大公因數 GCD (Greatest Common Division) Fibonacci Number 1+2+3+&amp;hellip;+n 1^2+2^2+3^2+&amp;hellip;+n^2 1!+2!+3!+…+n! x^n Iteration 疊代、跌代 定義：不斷利用目前求得的數值，</description>
     </item>
     
     <item>
       <title>Example of common recursion.</title>
-      <link>/posts/recursion/</link>
+      <link>/posts/2017/12/recursion/</link>
       <pubDate>Sat, 16 Dec 2017 10:26:44 +0800</pubDate>
       
-      <guid>/posts/recursion/</guid>
+      <guid>/posts/2017/12/recursion/</guid>
       <description>常見的遞迴式總整理 Factorial 最大公因數 GCD (Greatest Common Division) Fibonacci Number 1+2+3+&amp;hellip;+N 1^2+2^2+3^2+&amp;hellip;+N^2 1!+2!+&amp;hellip;+N! 二項式係數 (Binomial Coefficient) 計算x^y 河內塔(Hanoi) 1. Factorial #include &amp;lt;stdio.h&amp;gt; int main(void) { int k = 10; int sum; sum = factorial(k); printf(&amp;#34;%d&amp;#34;, sum); } int factorial(int n){ if(n ==</description>
     </item>
     
     <item>
       <title>Print right triangle and diamond in C.</title>
-      <link>/posts/triangle/</link>
+      <link>/posts/2017/12/triangle/</link>
       <pubDate>Thu, 14 Dec 2017 15:45:44 +0800</pubDate>
       
-      <guid>/posts/triangle/</guid>
+      <guid>/posts/2017/12/triangle/</guid>
       <description>印出直角三角形 由簡單到難的難度分別為以下四種 第一種直角三角形 第二種直角三角形 第三種直角三角形 第四種直角三角形 菱形(Diamond) 特殊菱形 第</description>
     </item>
     
     <item>
       <title>Assignment to Expression With Array Type</title>
-      <link>/posts/assignment-to-expression-with-array-type/</link>
+      <link>/posts/2017/12/assignment-to-expression-with-array-type/</link>
       <pubDate>Tue, 12 Dec 2017 20:38:28 +0800</pubDate>
       
-      <guid>/posts/assignment-to-expression-with-array-type/</guid>
+      <guid>/posts/2017/12/assignment-to-expression-with-array-type/</guid>
       <description>Learning from Error : assignment to expression with array type. Error Learning : assignment to expression with array type Error 1 Error 2 #include &amp;lt;stdio.h&amp;gt;#include &amp;lt;stdlib.h&amp;gt; struct node{ char course_name[20]; struct node *next; }; typedef struct node Node; int main(void) { Node *head = malloc(sizeof(Node)); head-&amp;gt;course_name = &amp;#34;Opearating system&amp;#34;; head-&amp;gt;next = NULL; int i; int number; // the number of course printf(&amp;#</description>
     </item>
     
     <item>
       <title>Sainkho Namtchylak</title>
-      <link>/posts/sainkho-namtchylak/</link>
+      <link>/posts/2017/11/sainkho-namtchylak/</link>
       <pubDate>Tue, 21 Nov 2017 22:55:17 +0800</pubDate>
       
-      <guid>/posts/sainkho-namtchylak/</guid>
+      <guid>/posts/2017/11/sainkho-namtchylak/</guid>
       <description>擁有獨特的嗓音，一位具有個人特色的藝術音樂家 Sainkho Namtchylak - 《Old Melodie》 Sainkho Namtchylak (俄羅斯歌手) 是非常具有個人特色的藝術音樂家， 獨特的嗓音是與生</description>
     </item>
     
     <item>
       <title>The Sound of Silence</title>
-      <link>/posts/the-sound-of-silence/</link>
+      <link>/posts/2017/11/the-sound-of-silence/</link>
       <pubDate>Tue, 21 Nov 2017 22:55:17 +0800</pubDate>
       
-      <guid>/posts/the-sound-of-silence/</guid>
+      <guid>/posts/2017/11/the-sound-of-silence/</guid>
       <description>Hello darkness, my old friend. The Sound Of Silence Hello darkness, my old friend, this is lyrics. 今天用經典老歌，以破題的歌詞的方式來介紹這首顛覆歌名的好音樂。 原唱版本為1964年Simon &amp;amp; Garfun</description>
     </item>
     
     <item>
       <title>1121 Martin Garrix</title>
-      <link>/posts/1121-martin-garrix/</link>
+      <link>/posts/2017/11/1121-martin-garrix/</link>
       <pubDate>Tue, 21 Nov 2017 20:41:17 +0800</pubDate>
       
-      <guid>/posts/1121-martin-garrix/</guid>
+      <guid>/posts/2017/11/1121-martin-garrix/</guid>
       <description>A famous DJ in Netherlands. Martin Garrix is a DJ in Netherlands. His latest single “Forever” is his massive collaboration with Matisse &amp;amp; Sadko. It opened with heart-aching chords on a church organ(教堂風琴) and decked out with melancholy guitar licks[1]. The video for Garrix’s latest</description>
     </item>
     
     <item>
       <title>Bluetooth 5.0</title>
-      <link>/posts/bluetooth5.0/</link>
+      <link>/posts/2017/11/bluetooth5.0/</link>
       <pubDate>Wed, 08 Nov 2017 19:18:03 +0800</pubDate>
       
-      <guid>/posts/bluetooth5.0/</guid>
+      <guid>/posts/2017/11/bluetooth5.0/</guid>
       <description>More range, higher speeds and increase broadcasting capacity. [English Version] Bluetooth 5.0 has been promoted in the smartphone market which be announced in 2016. Besides Bluetooth and Wi-Fi are common wireless networking technology on IOT application, and Zigbee which is supported widely in the IOT industry. Low-power Zigbee and its advantages of supporting many kinds of Network Topology, but with slow-growth of industry, it is not universal. (And announcing of</description>
     </item>
     

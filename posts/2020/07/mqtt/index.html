@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.74.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>MQTT 教學筆記&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">MQTT 教學筆記</h1><p class="article date">Sunday, July 26, 2020</p></section><article class="article markdown-body"><h1 id="mqtt-教學筆記">MQTT 教學筆記</h1>
+<p>MQTT (Message Queuing Telemetry Transport) 是物聯網極受歡迎的訊息傳輸協定 <br></p>
+<p>在使用 IOT 相關裝置時，當 Sensor 接收到資料時可透過 MQTT協定來傳送資料。<br></p>
+<h2 id="mqtt-介紹">MQTT 介紹</h2>
+<p>MQTT 以 發布（Publish）/ 訂閱(Subscribe) <strong>主題(Topic)</strong> 的方式來進行資料傳輸，發布的那端稱為 <strong>發布者(Publisher)</strong>，而訂閱的那端稱為 <strong>訂閱者(Subscriber)</strong>，而發布者和訂閱者之間則透過 <strong>代理人(Broker)</strong> 來進行中繼傳輸者，提供發布者和訂閱者服務。以現今的角度來看，發布者可以比喻像是 影音平台上的創作者，如：Youtube、Netflix，每天可隨時發布影片到影音平台上，而訂閱者可比喻為觀看影音平台上影片的觀眾，可選擇性訂閱喜歡的頻道來獲取娛樂、吸取新知，影音平台就能形容成代理人，接收創作者的影片到平台上，並將你所訂閱的頻道發布到你的影音平台上。<br></p>
+<p>相信這樣的比喻你已經懂 MQTT 基本概念了，現在讓我們來了解一下這些名詞的真實定義：<br></p>
+<ul>
+<li><strong>發布者(Publisher)</strong>：傳送 IOT 裝置所蒐集到的資料給 Broker，通常是 Sensor 的資料，這樣的行為稱為 <strong>發布（Publish）</strong>，而負責這個行動的角色就稱為發布者。</li>
+<li><strong>代理人(Broker)</strong>：負責接收發布者的資料，並且<strong>將所接收到的資料傳送給有訂閱該主題的訂閱者，此行為稱為訂閱</strong>（Subscribe），負責這些行動的角色就稱為代理人。</li>
+<li><strong>訂閱者(Subscriber)</strong>：負責接收 Broker 所傳送的資料。</li>
+</ul>
+<p>發布者和代理人為 <strong>Client 端</strong>，代理人為 <strong>Server 端</strong>。<br></p>
+<p>MQTT 為輕量化的傳輸協定，屬於連線導向，將訊息從某個端點傳送至 Server，現今由於行動裝置技術逐漸成熟， IOT 裝置輕巧、能夠遠端控制與監控，甚至作為穿戴式裝置，功能性的支援上就會有所限制，利用無線傳輸技術，網路頻寬與低功耗就成了研究問題。 <br></p>
+<p>隨著硬體研發越來越進步，智慧家庭的時代來臨，以及工業自動化、環境監測的應用，無線感測網路（Wireless Sensor Netowks, WSN）的技術越來越受到重視，有時候身邊有琳瑯滿目的 IOT 感測裝置，但在某些情境下，要如何只提取<strong>需要的特定資料，而不是接收所有的資料</strong>？假設 A 設備可以感測溫度、濕度或是離前方物體的距離，我們為這幾個感測器資料設置各種不同的主題：</p>
+<ul>
+<li>溫度主題：<code>Home/Temperature</code></li>
+<li>濕度主題：<code>Home/Humidity</code></li>
+<li>距離主題：<code>Home/Distance</code></li>
+</ul>
+<p>若現在我們只想知道溫度，我們就可以透過 MQTT 的協定機制，只需要訂閱 <code>Home/Temperature</code> ，就能夠有效減少資料傳輸的流量，如此傳輸效率也就更好。<br></p>
+<h2 id="安裝-mqtt-mosquitto">安裝 MQTT mosquitto</h2>
+<p>安裝 broker (server 端)</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt install mosquitto
+</code></pre></div><p>安裝完成之後，本機端將會開啟 1883 port 服務來聆聽是否有請求要連線，若有開啟服務即安裝成功。<br></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">Sophie@ubuntu:~$ netstat -a <span class="p">|</span> grep <span class="m">1883</span>
+tcp        <span class="m">0</span>      <span class="m">0</span> 0.0.0.0:1883            0.0.0.0:*               LISTEN     
+tcp6     <span class="m">0</span>      <span class="m">0</span> <span class="o">[</span>::<span class="o">]</span>:1883            		    <span class="o">[</span>::<span class="o">]</span>:*                	     LISTEN
+</code></pre></div><h2 id="安裝-mqtt-mosquitto-clients">安裝 MQTT mosquitto-clients</h2>
+<p>安裝 clinet 端</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sudo apt install mosquitto-clients
+</code></pre></div><p>安裝之後便可使自由使用 publish 和 subscribe。 <br></p>
+<p>發布（Publish）<br></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mosquitto_pub -h localhost -t Home/Temperature -m <span class="s2">&#34;Sensor Data or message&#34;</span>
+</code></pre></div><p>訂閱 （Subscribe）<br></p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">mosquitto_sub -h localhost -t Home/Temperature
+</code></pre></div><ul>
+<li>options <br>
+<code>-h</code> ： host  <br>
+<code>-t</code> ： topic <br>
+<code>-m</code> ： message <br>
+<code>-k</code> ： keep alive <br>
+<code>--help</code> 詳細說明</li>
+</ul>
+<p>使用範例如下圖 <br></p>
+<p><img src="../../../../../img/mqtt/02.png"><br></p>
+<h2 id="reference">Reference</h2>
+<p>[1]  <a href="https://ieeexplore.ieee.org/abstract/document/7906845"target="_blank">Ravi Kishore Kodali, SreeRamya Soratkal, MQTT based home automation system using ESP8266, 2016</a></p>
+</article><section class="article labels"><a class="category" href=/categories/note/>Note</a><a class="tag" href=/tags/mqtt/>MQTT</a><a class="tag" href=/tags/iot/>IOT</a><a class="tag" href=/tags/note/>Note</a></section><section class="article navigation"><p><a class="link" href="/posts/2020/07/free_space_on_ubuntu/"><span class="li">&rarr;</span>Free Space or Extend Space On Ubuntu</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

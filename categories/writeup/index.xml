@@ -14,19 +14,19 @@
     
     <item>
       <title>ASIS CTF 2020 pwn Full Protection Writeup</title>
-      <link>/posts/asisctf2020_full_protection_writeup/</link>
+      <link>/posts/2020/07/asisctf2020_full_protection_writeup/</link>
       <pubDate>Wed, 08 Jul 2020 17:51:39 +0800</pubDate>
       
-      <guid>/posts/asisctf2020_full_protection_writeup/</guid>
+      <guid>/posts/2020/07/asisctf2020_full_protection_writeup/</guid>
       <description>ASIS CTF 2020 pwn Full Protection Writeup 此題為 ASIS 的暖身題，但並非想像中的極易簡單 不過很裸，測試之後會發現有 format string 的漏洞。 檢查保護機制 首先檢查此程式有開啟那些保護，發現全</description>
     </item>
     
     <item>
       <title>AIS3 2020 Pre-Exam CTF pwn Portal Gun writeup</title>
-      <link>/posts/ais3ctf2020_portal_gun_writeup/</link>
+      <link>/posts/2020/06/ais3ctf2020_portal_gun_writeup/</link>
       <pubDate>Sat, 20 Jun 2020 15:42:33 +0800</pubDate>
       
-      <guid>/posts/ais3ctf2020_portal_gun_writeup/</guid>
+      <guid>/posts/2020/06/ais3ctf2020_portal_gun_writeup/</guid>
       <description>AIS3 2020 Pre-Exam CTF Portal Gun Writeup Author: Sophie Shin Time: 2020/06/10 10:00 A.M. 為了配合AIS3要抽選手繳交 wirteup，就延後發文了 前言 2019 第一次參加 MyFirstCTF 之後有幸錄取 AIS3 課程，便開始入坑 pwn 在那之</description>
     </item>
     

@@ -7,17 +7,26 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Thu, 13 Feb 2020 17:14:09 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 26 Jul 2020 13:25:56 +0800</lastBuildDate>
     
         <atom:link href="/categories/note/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>MQTT 教學筆記</title>
+      <link>/posts/2020/07/mqtt/</link>
+      <pubDate>Sun, 26 Jul 2020 13:25:56 +0800</pubDate>
+      
+      <guid>/posts/2020/07/mqtt/</guid>
+      <description>MQTT 教學筆記 MQTT (Message Queuing Telemetry Transport) 是物聯網極受歡迎的訊息傳輸協定 在使用 IOT 相關裝置時，當 Sensor 接收到資料時可透過 MQTT協定來傳送資料。 MQTT 介紹 MQTT 以 發布（Publ</description>
+    </item>
+    
+    <item>
       <title>Hugo Tutorial</title>
-      <link>/posts/hugotut/</link>
+      <link>/posts/2020/02/hugotut/</link>
       <pubDate>Thu, 13 Feb 2020 17:14:09 +0800</pubDate>
       
-      <guid>/posts/hugotut/</guid>
+      <guid>/posts/2020/02/hugotut/</guid>
       <description>Hugo Tutorial 本篇文章適用於 有個人github網站，第一次使用 hugo 的使用者 有post文章需求，不想要html一直複製貼上 想懶人打造個人網站的使用者 建議要</description>
     </item>
     

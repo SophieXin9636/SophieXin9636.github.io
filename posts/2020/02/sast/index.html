@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.74.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>靜態分析工具介紹&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">靜態分析工具介紹</h1><p class="article date">Monday, February 17, 2020</p></section><article class="article markdown-body"><h1 id="intro-to-static-analysis-tools">Intro to Static Analysis Tools</h1>
+<p>打 CTF 時，若沒有用對工具，在分析時會花費許多時間 <br>
+在寫 reverse 或 pwn 時，使用工具是絕對必要的，能夠適時減少不必要的時間。 <br>
+在此介紹幾個打 CTF 常使用的工具及指令，作為參考。</p>
+<h2 id="基本概念介紹">基本概念介紹</h2>
+<h3 id="工具">工具</h3>
+<ul>
+<li>IDA：ELF/PE</li>
+<li>Objdump：ELF、COFF</li>
+<li>readelf：ELF</li>
+<li>Radare2：ELF</li>
+<li>rabin2：ELF/PE/MZ</li>
+</ul>
+<h3 id="object-file">Object File</h3>
+<p>以文件形式存放在磁碟（Disk）中的 object module
+有三種形式</p>
+<ul>
+<li>Relocatable Object File
+<ul>
+<li>在編譯時期與其他  Relocatable Object File 合併起來，產生出一個 Executable Object File</li>
+</ul>
+</li>
+<li>Executable Object File
+<ul>
+<li>直接載入到主記憶體執行</li>
+</ul>
+</li>
+<li>Shared Object File
+<ul>
+<li>為 Relocatable Object File 的一種</li>
+<li>可在執行時期動態連結並載入到主記憶體</li>
+<li>也可在載入到記憶體時期，才動態連結此檔案</li>
+</ul>
+</li>
+</ul>
+<p>Compiler 和 Assembler 可產生 Relocatable Object Files （包含 Shared Object File）<br>
+而 Linkers 可產生 executable Object Files <br></p>
+<h3 id="副檔名及-object-file-格式">副檔名及 Object File 格式</h3>
+<p>各個作業系統的 Object File 格式不盡相同， <br>
+像是 Windows 使用的是 PE 格式，而 Mac OS-X 使用的是 Mach-O 格式， <br>
+而 Linux 與 Unix 系統使用 ELF 格式 <br>
+上述格式統稱為 COFF 格式</p>
+<ul>
+<li>可執行檔格式</li>
+<li>COFF (Common Object File Format)
+<ul>
+<li>PE 格式 (Portable Executable)
+<ul>
+<li>Executable (.exe)</li>
+<li>Object File</li>
+<li>shared Object File (.dll)</li>
+</ul>
+</li>
+<li>ELF 格式 (Executable Linkable Format)
+<ul>
+<li>Relocatable (.o/.obj)</li>
+<li>Executable (<code>/bin/bash 文件</code>)</li>
+<li>Object File</li>
+<li>shared Object File (.so)</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>Windows: PE  （.exe)
+Linux  : ELF (.o/.so/.elf 或無副檔名)
+Unix   : .out/.o 或無副檔名
+</code></pre><ul>
+<li>動態連結庫 檔案格式</li>
+</ul>
+<pre><code>Windows: .dll
+Linux  : .so
+</code></pre><ul>
+<li>靜態連結庫 檔案格式</li>
+</ul>
+<pre><code>Windows: .lib
+Linux  : .a
+</code></pre><h2 id="ida">IDA</h2>
+<p>功能最完整，且可自行加plugin，例如暗色主題，<br>
+由於此款軟體需要付費，在此不多做介紹</p>
+<h2 id="objdump">Objdump</h2>
+<p>顯示 Object File 資訊</p>
+<ul>
+<li>-d： &ndash;disassemble 反組譯 （最常使用）</li>
+</ul>
+<pre><code>objdump -d -M intel ./run
+</code></pre><ul>
+<li>-f： 顯示檔頭，最有意義的資訊為 start address</li>
+<li>-s： 顯示所有 section 對應的 binary &amp; hexdump</li>
+<li>-R： 顯示 dynamic relocation entries</li>
+<li>-p： 顯示 program header table
+<ul>
+<li>vaddr: virtual address</li>
+<li>paddr: process address</li>
+<li>filesz: segment size in object file</li>
+<li>memsz: segment size in memory</li>
+<li>flags: run-time permissions</li>
+</ul>
+</li>
+</ul>
+<h2 id="readelf">readelf</h2>
+<p>顯示 ELF file 資訊</p>
+<ul>
+<li><code>readelf -S binary</code> : 顯示 secion header 資訊</li>
+</ul>
+<h2 id="radare2">Radare2</h2>
+<p>非常強大的靜態分析工具</p>
+<ul>
+<li><code>(r2) pdf</code>：print disassemble function</li>
+<li><code>(r2) aa</code> ：Analyze all (functions )</li>
+<li><code>(r2) afl</code>：Analyze functions list</li>
+<li><code>(r2) s main</code>：Seek to main()</li>
+</ul>
+<h2 id="rabin2">rabin2</h2>
+<p>Binary program info extractor <br>
+可對 ELF/PE/MZ 檔做靜態分析</p>
+<ul>
+<li>
+<p><code>rabin2 -g binary</code>：顯示所有有意義的訊息</p>
+</li>
+<li>
+<p><code>rabin2 -M binary</code>：顯示 <code>main()</code> 的位址</p>
+</li>
+<li>
+<p><code>rabin2 -i binary</code>：顯示 使用了哪些 library 的函式 (show imports)
+<img src="https://i.imgur.com/2VUe3IH.png" width=80%></p>
+</li>
+<li>
+<p><code>rabin2 -S binary</code>：顯示所有的 section 的 位址及 rwx 權限</p>
+</li>
+<li>
+<p><code>rabin2 -l binary</code>：顯示此 binary 所 linking 的 library(.so 檔案)
+<img src="https://i.imgur.com/aBvvmC2.png" width=80%></p>
+</li>
+<li>
+<p><code>rabin2 -z binary</code>：印出檔案的可視字串及所在的 .data 及 .rodata section 及位址
+<img src="https://i.imgur.com/iwoQKaI.png" width=80%></p>
+</li>
+<li>
+<p><code>rabin2 -e  binary</code>：顯示程式的 entrypoints (reverse 分析很方便！)</p>
+</li>
+</ul>
+<h2 id="reference">reference</h2>
+<ul>
+<li>Computer Systems. A Programmer’s Perspective 3e [7.3],[7.8]</li>
+</ul>
+</article><section class="article labels"><a class="category" href=/categories/ctf-pwn/>CTF pwn</a><a class="tag" href=/tags/ctf/>CTF</a><a class="tag" href=/tags/pwn/>pwn</a><a class="tag" href=/tags/reverse/>reverse</a></section><section class="article navigation"><p><a class="link" href="/posts/2020/03/va_list/"><span class="li">&larr;</span>Variable Length Arguments</a></p><p><a class="link" href="/posts/2020/02/easyrop/"><span class="li">&rarr;</span>解 ROP 之工具與詳細流程</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

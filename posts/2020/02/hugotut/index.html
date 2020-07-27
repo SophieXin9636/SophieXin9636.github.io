@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.74.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Hugo Tutorial&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">Hugo Tutorial</h1><p class="article date">Thursday, February 13, 2020</p></section><article class="article markdown-body"><h1 id="hugo-tutorial">Hugo Tutorial</h1>
+<h2 id="本篇文章適用於">本篇文章適用於</h2>
+<ul>
+<li>有個人github網站，第一次使用 hugo 的使用者</li>
+<li>有post文章需求，不想要html一直複製貼上</li>
+<li>想懶人打造個人網站的使用者</li>
+<li>建議要有 git 指令的基本概念</li>
+</ul>
+<h2 id="前言">前言</h2>
+<p>原先使用 boostrap 前端框架撰寫個人網站,
+由於有撰寫文章的需求，每一次新增文章就必須修改主頁面的index.html以及posts相關的連結，非常麻煩。<br>
+然而在有網站開發經驗的室友推薦，便開始嘗試使用hugo</p>
+<h2 id="hugo-介紹">hugo 介紹</h2>
+<p>hugo是使用<strong>go程式語言</strong>所開發的<strong>靜態網頁生成器</strong>，可透過一些hugo指令並且搭配別人撰寫好的主題，直接生成出一個基於html+css+javascript頁面，無須撰寫html+css+javascript</p>
+<ul>
+<li>若想要新增文章，也無須手動建立 html網頁，而是使用 <code>hugo new posts/my_post.md</code> 直接撰寫markdown即可，對於懶人非常方便，無須做重複撰寫html的動作。</li>
+</ul>
+<h3 id="優點">優點</h3>
+<ul>
+<li>不用慢慢撰寫 html + css + js，可透過別人寫好的樣板來使用</li>
+<li>若有css + js的基礎，可使用個人化的修改，例如排版、hovor(滑鼠游標指向後會顯示的顏色）、個人化icon等等</li>
+</ul>
+<h2 id="建立個人頁面">建立個人頁面</h2>
+<h3 id="前言-1">前言</h3>
+<p>由於在使用hugo之前，就已經建立好個人的github頁面
+若是第一次使用github，並且想使用hugo工具產生個人頁面，
+推薦搜尋 ==hugo github教學==
+或是直接<a href="https://gohugo.io/getting-started/quick-start/"target="_blank">Qucik Start</a></p>
+<p>此篇教學會以<strong>已有個人github網站，且想要改成hugo快速建立個人頁面及文章的使用者。</strong></p>
+<h3 id="1安裝-brew">1.安裝 brew</h3>
+<p>brew 是套件管理工具，類似於ubuntu的apt-get <br>
+可根據個人的作業系統決定安裝方式。
+<a href="https://gohugo.io/getting-started/installing"target="_blank">安裝連結</a></p>
+<h3 id="2安裝-hugo">2.安裝 hugo</h3>
+<pre><code>brew install hugo
+</code></pre><ul>
+<li>確認是否安裝成功</li>
+</ul>
+<pre><code>hugo version
+</code></pre><h3 id="3將個人的github個人網站的repo下載至本地端">3.將個人的github個人網站的repo下載至本地端</h3>
+<p>(個人建議備份整個資料夾在備份區，避免做到一半發生不可逆的問題)</p>
+<pre><code>git clone https://github.com/&lt;account&gt;/&lt;account&gt;.github.io
+cd &lt;account&gt;.github.io
+</code></pre><h3 id="4建立-hugo-site">4.建立 hugo site</h3>
+<pre><code>hugo new site hugo-website
+cd hugo-website
+</code></pre><p>則會產生 預設的hugo的檔案結構
+<a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/jeKdCfT.png"><img  src="https://i.imgur.com/jeKdCfT.png"
+        alt/></a></p>
+<h3 id="5選擇主題">5.選擇主題</h3>
+<ul>
+<li>個人是選擇 hugo-notepadium 主題</li>
+<li>可根據<a href="https://themes.gohugo.io/"target="_blank">hugo主題網站</a>選擇喜歡的主題，在到該主題的repo下載</li>
+</ul>
+<pre><code>git init
+cd hugo-website
+git submodule add https://github.com/budparr/gohugo-theme-ananke.git themes/ananke
+</code></pre><h3 id="6編輯-configtoml">6.編輯 <code>config.toml</code></h3>
+<p>選擇喜歡的編輯器開啟 <code>config.toml</code>
+作者是使用ubuntu 18.04 sublime開啟</p>
+<ul>
+<li>Tips: 在編輯 <code>config.toml</code> 時，可直接看該theme的<code>README.md</code>，裡面會有詳盡的介紹</li>
+</ul>
+<h2 id="7建立個人post">7.建立個人post</h2>
+<pre><code>hugo new posts/&lt;name&gt;.md
+</code></pre><p>則該檔案會出現以下的header，該header的資訊是隱藏的</p>
+<pre><code>---
+title: &quot;Test&quot;
+date: 2020-02-13T18:28:53+08:00
+draft: true
+---
+</code></pre><ul>
+<li>draft為true時，則頁面不會出現在github上面，但在本地端執行 <code>hugo server -D</code> 時，則會出現在localhost</li>
+<li>反之為draft為false，commit到github home page時將會出現在主頁上</li>
+</ul>
+<h3 id="8使用-hugo-server-架起網站本地端測試">8.使用 hugo server 架起網站（本地端測試）</h3>
+<pre><code>hugo server -D
+</code></pre><p>即可看到本地端的個人頁面，查看個人撰寫的文章排版是否正確</p>
+<h3 id="9產生-htmlcssjs-網站">9.產生 html+css+js 網站</h3>
+<p>若確認沒有問題，每當撰寫完新聞文章時，除了將draft改成fasle <br>
+且須輸入</p>
+<pre><code>hugo
+</code></pre><ul>
+<li>將會依照選擇的主題，自動生成網站的檔案結構 （html+css+javascript)</li>
+<li>無須手動撰寫 html+css+javascript</li>
+<li>檔案建立在 <code>website-hugo/public/</code> 目錄下</li>
+</ul>
+<h3 id="10提交至-githubio-repo">10.提交至 github.io repo</h3>
+<pre><code>cd public
+git add .
+git commit -m &quot;my first hugo website&quot;
+git remote add origin git@github.com:&lt;account&gt;/&lt;account&gt;.github.io.git
+git push -u origin master
+</code></pre><h3 id="10建立-hugo-repo-且提交到-github">10.建立 hugo repo 且提交到 github</h3>
+<ul>
+<li>
+<p>在個人github頁面建立 hugo-website 的倉庫</p>
+</li>
+<li>
+<p>不要勾 <code>Initialize this repository with a README</code> 的選項
+在本地端按照下列輸入指令</p>
+</li>
+</ul>
+<pre><code>echo &quot;# hugo-website&quot; &gt;&gt; README.md
+git add .
+git commit -m &quot;first commit&quot;
+git remote add origin https://github.com/&lt;your-account&gt;/hugo-website.git
+git push -u origin master
+</code></pre><h2 id="補充">補充</h2>
+<p>若不小心使用git指令把檔案玩壞掉時
+可以重新git clone下來
+但必須先將本地端的檔案刪乾淨 (該備份的備份)</p>
+<p>以我的為例</p>
+<pre><code>git clone https://github.com/SophieXin9636/website-hugo.git 
+cd website-hugo
+rm -rf public
+git clone https://github.com/SophieXin9636/SophieXin9636.github.io.git
+mv SophieXin9636.github.io public
+</code></pre><p>則可以到 public 檢查 remote 連結是否為 github.io</p>
+<pre><code>git remote -v
+</code></pre><p>最後選擇喜歡的編輯器撰寫markdown吧！</p>
+</article><section class="article labels"><a class="category" href=/categories/note/>note</a><a class="tag" href=/tags/hugo/>hugo</a><a class="tag" href=/tags/website/>website</a><a class="tag" href=/tags/git/>git</a></section><section class="article navigation"><p><a class="link" href="/posts/2020/02/easyrop/"><span class="li">&larr;</span>解 ROP 之工具與詳細流程</a></p><p><a class="link" href="/posts/2020/02/protection/"><span class="li">&rarr;</span>ELF 五種保護機制</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

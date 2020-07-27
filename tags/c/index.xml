@@ -14,73 +14,73 @@
     
     <item>
       <title>Variable Length Arguments</title>
-      <link>/posts/va_list/</link>
+      <link>/posts/2020/03/va_list/</link>
       <pubDate>Sun, 22 Mar 2020 16:33:34 +0800</pubDate>
       
-      <guid>/posts/va_list/</guid>
+      <guid>/posts/2020/03/va_list/</guid>
       <description>Variable Length Arguments 當輸入的引數長度不確定時，我們可以使用 Variable Length Arguments 來實作。 其來自於 &amp;lt;stdarg.h&amp;gt; 標準函式庫中 意義 va_list 為 variable argument lists 無論輸入的參數個數為何，皆可處理 實作原理 typedef char *va_list;</description>
     </item>
     
     <item>
       <title>Commonly Used Taylor Series</title>
-      <link>/posts/taylor-series/</link>
+      <link>/posts/2018/01/taylor-series/</link>
       <pubDate>Sun, 07 Jan 2018 15:45:44 +0800</pubDate>
       
-      <guid>/posts/taylor-series/</guid>
+      <guid>/posts/2018/01/taylor-series/</guid>
       <description>常見的泰勒級數 Commonly Used Taylor Series 常見的泰勒展開式 (Taylor expansion) 有以下 1/(1-x) sin(x) cos(x) e^x ln(1+x) arctan(x) 1/(1-x) #include &amp;lt;stdio.h&amp;gt; /* Taylor&amp;#39;s Series : 1/(1-x) */ int main(void) { double x; // input data double sum = 1.0; int i, n = 100; double xpower = 1.0; scanf(&amp;#34;%lf&amp;#34;, &amp;amp;x); if( x &amp;gt; -1 &amp;amp;&amp;amp; x &amp;lt; 1){</description>
     </item>
     
     <item>
       <title>String</title>
-      <link>/posts/string/</link>
+      <link>/posts/2018/01/string/</link>
       <pubDate>Sun, 07 Jan 2018 14:45:44 +0800</pubDate>
       
-      <guid>/posts/string/</guid>
+      <guid>/posts/2018/01/string/</guid>
       <description>字串相關整理 字串 (string) strcpy、strcat比較 使用strcpy容易發生幾種狀況 反轉字串 Reverse a string strcmp介紹、字串排序 (string sort) strcpy、s</description>
     </item>
     
     <item>
       <title>質數相關程式題</title>
-      <link>/posts/prime/</link>
+      <link>/posts/2017/12/prime/</link>
       <pubDate>Tue, 19 Dec 2017 20:25:01 +0800</pubDate>
       
-      <guid>/posts/prime/</guid>
+      <guid>/posts/2017/12/prime/</guid>
       <description>質數相關程式題 程式的構想由簡易至難分類 判斷是否為質數 列出n以內的所有質數 list prime number 補充：政大106年資科系轉學考考題 Next Prime Number 質因數分解(Integ</description>
     </item>
     
     <item>
       <title>Example of common iteration</title>
-      <link>/posts/iteration/</link>
+      <link>/posts/2017/12/iteration/</link>
       <pubDate>Sat, 16 Dec 2017 10:26:44 +0800</pubDate>
       
-      <guid>/posts/iteration/</guid>
+      <guid>/posts/2017/12/iteration/</guid>
       <description>常見Iterative式 Iteration 疊代、跌代 Iteration 例子 Factorial 最大公因數 GCD (Greatest Common Division) Fibonacci Number 1+2+3+&amp;hellip;+n 1^2+2^2+3^2+&amp;hellip;+n^2 1!+2!+3!+…+n! x^n Iteration 疊代、跌代 定義：不斷利用目前求得的數值，</description>
     </item>
     
     <item>
       <title>Example of common recursion.</title>
-      <link>/posts/recursion/</link>
+      <link>/posts/2017/12/recursion/</link>
       <pubDate>Sat, 16 Dec 2017 10:26:44 +0800</pubDate>
       
-      <guid>/posts/recursion/</guid>
+      <guid>/posts/2017/12/recursion/</guid>
       <description>常見的遞迴式總整理 Factorial 最大公因數 GCD (Greatest Common Division) Fibonacci Number 1+2+3+&amp;hellip;+N 1^2+2^2+3^2+&amp;hellip;+N^2 1!+2!+&amp;hellip;+N! 二項式係數 (Binomial Coefficient) 計算x^y 河內塔(Hanoi) 1. Factorial #include &amp;lt;stdio.h&amp;gt; int main(void) { int k = 10; int sum; sum = factorial(k); printf(&amp;#34;%d&amp;#34;, sum); } int factorial(int n){ if(n ==</description>
     </item>
     
     <item>
       <title>Print right triangle and diamond in C.</title>
-      <link>/posts/triangle/</link>
+      <link>/posts/2017/12/triangle/</link>
       <pubDate>Thu, 14 Dec 2017 15:45:44 +0800</pubDate>
       
-      <guid>/posts/triangle/</guid>
+      <guid>/posts/2017/12/triangle/</guid>
       <description>印出直角三角形 由簡單到難的難度分別為以下四種 第一種直角三角形 第二種直角三角形 第三種直角三角形 第四種直角三角形 菱形(Diamond) 特殊菱形 第</description>
     </item>
     
     <item>
       <title>Assignment to Expression With Array Type</title>
-      <link>/posts/assignment-to-expression-with-array-type/</link>
+      <link>/posts/2017/12/assignment-to-expression-with-array-type/</link>
       <pubDate>Tue, 12 Dec 2017 20:38:28 +0800</pubDate>
       
-      <guid>/posts/assignment-to-expression-with-array-type/</guid>
+      <guid>/posts/2017/12/assignment-to-expression-with-array-type/</guid>
       <description>Learning from Error : assignment to expression with array type. Error Learning : assignment to expression with array type Error 1 Error 2 #include &amp;lt;stdio.h&amp;gt;#include &amp;lt;stdlib.h&amp;gt; struct node{ char course_name[20]; struct node *next; }; typedef struct node Node; int main(void) { Node *head = malloc(sizeof(Node)); head-&amp;gt;course_name = &amp;#34;Opearating system&amp;#34;; head-&amp;gt;next = NULL; int i; int number; // the number of course printf(&amp;#</description>
     </item>
     

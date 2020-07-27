@@ -14,19 +14,19 @@
     
     <item>
       <title>函式呼叫(I) - 參數傳遞</title>
-      <link>/posts/callfunction/</link>
+      <link>/posts/2020/04/callfunction/</link>
       <pubDate>Tue, 21 Apr 2020 11:30:51 +0800</pubDate>
       
-      <guid>/posts/callfunction/</guid>
+      <guid>/posts/2020/04/callfunction/</guid>
       <description>函式呼叫(I) - 參數傳遞 前言 這學期修了計算機組織的課程，了解到 MIPS 呼叫函式所暫存的參數方式與 x86、x64 有一些不同，在了解逆向分析之函數分析</description>
     </item>
     
     <item>
       <title>靜態分析工具介紹</title>
-      <link>/posts/sast/</link>
+      <link>/posts/2020/02/sast/</link>
       <pubDate>Mon, 17 Feb 2020 14:35:31 +0800</pubDate>
       
-      <guid>/posts/sast/</guid>
+      <guid>/posts/2020/02/sast/</guid>
       <description>Intro to Static Analysis Tools 打 CTF 時，若沒有用對工具，在分析時會花費許多時間 在寫 reverse 或 pwn 時，使用工具是絕對必要的，能夠適時減少不必要的時間。 在此介紹幾個打 CTF 常使用</description>
     </item>
     

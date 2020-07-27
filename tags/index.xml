@@ -7,10 +7,37 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-TW</language>
     <copyright>©2020 Notepadium.</copyright>
-    <lastBuildDate>Sat, 11 Jul 2020 19:36:26 +0800</lastBuildDate>
+    <lastBuildDate>Sun, 26 Jul 2020 13:25:56 +0800</lastBuildDate>
     
         <atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>IOT</title>
+      <link>/tags/iot/</link>
+      <pubDate>Sun, 26 Jul 2020 13:25:56 +0800</pubDate>
+      
+      <guid>/tags/iot/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>MQTT</title>
+      <link>/tags/mqtt/</link>
+      <pubDate>Sun, 26 Jul 2020 13:25:56 +0800</pubDate>
+      
+      <guid>/tags/mqtt/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Note</title>
+      <link>/tags/note/</link>
+      <pubDate>Sun, 26 Jul 2020 13:25:56 +0800</pubDate>
+      
+      <guid>/tags/note/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>disk management</title>

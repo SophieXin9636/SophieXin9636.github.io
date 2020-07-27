@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en"><meta charset="utf-8"><meta name="generator" content="Hugo 0.74.3" /><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark"><title>Stack Migration&nbsp;&ndash;&nbsp;Shin&#39;s Blog</title><link rel="stylesheet" href="/css/core.min.56852e5dcac5d77dc592e9044e37cf8a2f4c0ecdb70121069de9cdf63290499e3eec4da4a5269dcc777d4703484701cd.css" integrity="sha384-VoUuXcrF133FkukETjfPii9MDs23ASEGnenN9jKQSZ4&#43;7E2kpSadzHd9RwNIRwHN"><body>
+    <div class="base-body"><section id="header" class="site header">
+    <div class="header wrap"><span class="header left-side"><a class="site home" href="/"><span class="site name">Shin's Blog</span></a></span>
+        <span class="header right-side"><div class="nav wrap"><nav class="nav"><a class="nav item" href="/categories/">Categories</a><a class="nav item" href="/tags/">Tags</a><a class="nav item" href="/content/about.html">About</a><a class="nav item" href="https://gohugo.io/"target="_blank">Hugo</a></nav></div></span></div><div class="site slogan"><span class="title">Listening Music and Learning CS</span></div></section><div id="content"><section class="article header">
+    <h1 class="article title">Stack Migration</h1><p class="article date">Thursday, May 14, 2020</p></section><article class="article markdown-body"><h1 id="stack-migration">Stack Migration</h1>
+<p><strong>Stack Migration</strong> 指 ROP (Return Oriented Programming) 的一種技巧，可在當 stack 不夠使用時，利用 ROP 控制來竄改 <code>stack pointer (esp or rsp)</code>，指向其他位址，以獲取額外的寫入空間。 <br></p>
+<p>範例原始碼</p>
+<pre><code class="language-C=" data-lang="C=">#include &lt;stdio.h&gt;
+#include &lt;unistd.h&gt;
+
+char nothing[128] = &quot;&quot;;
+
+void meet() {
+    char something[32];
+    printf(&quot;What are you looking for? &quot;);
+    read(0, something, 128);
+    return;
+}
+
+int main() {
+    setvbuf(stdout, 0, 2, 0);
+    setvbuf(stdin, 0, 2, 0);
+    printf(&quot;What are you looking for? &quot;);
+    fflush(stdout);
+    read(0, nothing, 128);
+    
+    meet();
+    return 0;
+}
+</code></pre><p>看完原始碼後，預設此程式沒有開啟 canary 保護，<br></p>
+<p>Compile &amp; Static Linking</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">gcc lab.c -fno-stack-protector -no-pie -static -o lab
+</code></pre></div><p>option 解釋如下：[1]</p>
+<ul>
+<li>
+<p><code>-fno-stack-protector</code>： 關閉 stack 保護，也就是 stack section 無 canary，反之若要開啟則要使用下列選項擇一：</p>
+<ul>
+<li><code>-fstack-protector</code>：簡單來說，只要該 function 有呼叫及使用到 8 bytes 大小以上的 variable 及 array，就必須開啟保護。</li>
+<li><code>-fstack-protector-strong</code>：只要該 function 符合下列條件之一，就會開啟 stack 保護
+<ol>
+<li>有宣告 array，不論型態大小</li>
+<li>有呼叫到 <code>alloca()</code></li>
+<li>得知 local variable 位址</li>
+</ol>
+</li>
+<li><code>-fstack-protector-all</code>：所有 function 開啟 stack 保護。</li>
+</ul>
+</li>
+<li>
+<p><code>-no-pie</code>：關閉 text section 隨機位址化之保護 <br></p>
+</li>
+<li>
+<p><code>-static</code>：靜態編譯，在 run-time 階段不連接 library，而是在編譯時期直接將程式碼加到原先的程式上。</p>
+</li>
+</ul>
+<p>檢查此執行檔是否為靜態連結</p>
+<div class="highlight"><pre class="chroma"><code class="language-sh" data-lang="sh">sophie@ubuntu:~$ file lab
+lab: ELF 64-bit LSB executable, x86-64, version <span class="m">1</span> <span class="o">(</span>GNU/Linux<span class="o">)</span>, statically linked, <span class="k">for</span> GNU/Linux 3.2.0, BuildID<span class="o">[</span>sha1<span class="o">]=</span>00e8fa1c190976415122964b574f5c8a3c7aba29, not stripped
+</code></pre></div><p>使用 <code>checksec</code> 檢查確認有哪些保護關閉</p>
+<pre><code>    Arch:     amd64-64-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX enabled
+    PIE:      No PIE (0x400000)
+</code></pre><p>因為沒有 stack 保護，我們可以使用 bof 來突破 stack 的寫入空間，<br>
+並且將原先的 retrun address 竄改成 <code>leave ; ret</code> 的 gadget 位址，<br>
+只要執行到 <code>ret</code> 指令時，就會將 program counter (rip) 指向 <code>leave ; ret</code> 之位址，<br>
+就能夠透過 leave 的 <code>mov rsp, rbp ; pop rbp</code> 來竄改原先的 <code>rsp</code>. <br><br>
+以下圖為例子，當 <code>rip</code> 指向 leave 並執行之後，便會將 <code>rbp = data_sec-0x8</code> 賦值給 <code>rsp</code><br>
+再執行 <code>pop rbp;</code>， <code>rbp</code> 就會等於 <code>0xDEADBEEF</code> （此時 <code>rbp</code>已經沒有利用價值，因此隨便給值即可) <br>
+而 <code>rsp</code> 因為 <code>pop</code> 值而變成 <code>data_sec</code>，此時便成功將 stack <em>migration</em> 到 data section <br><br>
+輸入 Payload 之前 <br>
+<img src="../../../img/migration/migration_01.PNG" width=80%><br>
+輸入 Payload 之後 <br>
+<img src="../../../img/migration/migration_02.PNG" width=80%><br>
+stack pointer 指向新的位置於 data section<br>
+<img src="../../../img/migration/migration_03.PNG" width=80%></p>
+<h2 id="reference">Reference</h2>
+<ol>
+<li><a href="http://www.keil.com/support/man/docs/armclang_ref/armclang_ref_cjh1548250046139.htm"target="_blank">stack protector</a></li>
+</ol>
+</article><section class="article labels"><a class="category" href=/categories/ctf-pwn/>CTF pwn</a><a class="tag" href=/tags/ctf/>CTF</a><a class="tag" href=/tags/pwn/>pwn</a></section><section class="article navigation"><p><a class="link" href="/posts/2020/06/ais3ctf2020_portal_gun_writeup/"><span class="li">&larr;</span>AIS3 2020 Pre-Exam CTF pwn Portal Gun writeup</a></p><p><a class="link" href="/posts/2020/04/callfunction/"><span class="li">&rarr;</span>函式呼叫(I) - 參數傳遞</a class="link">
+    </p></section></div><section id="footer" class="footer"><div class="footer-wrap">
+    <p class="copyright">©2020 Notepadium.</p>
+    <p class="powerby"><span>Powered by </span><a href="https://gohugo.io" 
+        target="_blank">Hugo</a><span> and the </span><a href="https://themes.gohugo.io/hugo-notepadium/" 
+        target="_blank">Notepadium</a></p>
+</div></section><script src="/js/hljs.min.0799348a91dce12c6be4a73f943cfe78f181f4e6f6ec35c4af0fca1de377879f77cfab03c30f03a174d675737b5a9314.js" integrity="sha384-B5k0ipHc4Sxr5Kc/lDz&#43;ePGB9Ob27DXErw/KHeN3h593z6sDww8DoXTWdXN7WpMU"></script><script>hljs.initHighlightingOnLoad();</script></div>
+</body>
+
+</html>
